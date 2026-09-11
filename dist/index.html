@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0c0f" />
+  <meta name="description" content="方舟智创旗下女装电商视频 Agent，对标视频生成与电商图片智能生产工作台。" />
+  <title>方舟女装电商视频 Agent</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0c0f'/%3E%3Cpath d='M7 21.5 16 6l9 15.5-9 4.5z' fill='%23ff4d5f'/%3E%3Cpath d='M16 11v10M11.5 18.5H21' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --ink: #101116;
+      --muted: #73757d;
+      --line: #dfdfe3;
+      --paper: #f4f4f1;
+      --panel: #ffffff;
+      --dark: #0c0d10;
+      --red: #f2485d;
+      --red-soft: #fff0f2;
+      --blue: #475cff;
+      --shadow: 0 24px 60px rgba(18, 20, 28, .08);
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); }
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    .app { min-height: 100vh; display: grid; grid-template-columns: 232px minmax(0, 1fr); }
+    .sidebar {
+      position: sticky; top: 0; height: 100vh; padding: 26px 18px 22px; color: #f7f7f7;
+      background: var(--dark); display: flex; flex-direction: column; z-index: 5;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 0 8px 28px; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--red); font-weight: 850; }
+    .brand strong { display: block; font-size: 15px; letter-spacing: .02em; }
+    .brand small { display: block; margin-top: 3px; color: #8c8e97; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    .nav-label { margin: 0 10px 9px; color: #6d7079; font-size: 11px; letter-spacing: .12em; }
+    .nav { display: grid; gap: 5px; }
+    .nav button { border: 0; background: transparent; border-radius: 10px; padding: 11px 12px; color: #a6a8b0; display: flex; align-items: center; gap: 11px; text-align: left; cursor: pointer; }
+    .nav button:hover { background: #17181d; color: white; }
+    .nav button.active { background: #222329; color: white; }
+    .nav svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .sidebar-foot { margin-top: auto; border-top: 1px solid #28292f; padding: 18px 8px 0; }
+    .usage { display: flex; justify-content: space-between; color: #a3a5ad; font-size: 12px; }
+    .bar { height: 5px; margin: 9px 0 16px; border-radius: 999px; background: #2b2c32; overflow: hidden; }
+    .bar i { display: block; width: 38%; height: 100%; background: var(--red); border-radius: inherit; }
+    .user { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: #17181d; background: #e9e9e5; font-size: 12px; font-weight: 750; }
+    .user span { font-size: 13px; }
+    .user small { display: block; margin-top: 2px; color: #70727a; }
+
+    main { min-width: 0; }
+    .topbar { height: 78px; padding: 0 34px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: rgba(244,244,241,.88); backdrop-filter: blur(16px); }
+    .topbar h1 { margin: 0; font-size: 20px; letter-spacing: -.02em; }
+    .topbar p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .header-actions { display: flex; gap: 10px; }
+    .icon-btn, .ghost-btn { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; cursor: pointer; }
+    .icon-btn { width: 38px; height: 38px; display: grid; place-items: center; }
+    .icon-btn svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+    .ghost-btn { padding: 9px 14px; font-size: 13px; }
+    .workspace { max-width: 1440px; margin: 0 auto; padding: 30px 34px 60px; }
+    .mode-switch { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .mode-card {
+      position: relative; min-height: 108px; padding: 22px 22px 20px 78px; text-align: left; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.72); cursor: pointer; overflow: hidden; transition: .2s ease;
+    }
+    .mode-card:hover { transform: translateY(-2px); border-color: #b9bbc3; }
+    .mode-card.active { background: var(--ink); color: white; border-color: var(--ink); box-shadow: var(--shadow); }
+    .mode-num { position: absolute; left: 22px; top: 22px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--muted); background: #eeeef0; font-weight: 760; font-size: 13px; }
+    .mode-card.active .mode-num { background: var(--red); color: white; }
+    .mode-card strong { display: block; margin-bottom: 7px; font-size: 18px; }
+    .mode-card small { color: #7d7f87; font-size: 13px; line-height: 1.55; }
+    .mode-card.active small { color: #aeb0b8; }
+
+    .work-grid { display: grid; grid-template-columns: minmax(0, 1.38fr) minmax(310px, .62fr); gap: 20px; align-items: stretch; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 8px 30px rgba(24,27,33,.035); }
+    .form-panel { padding: 26px; }
+    .panel-head { display: flex; align-items: start; justify-content: space-between; gap: 18px; margin-bottom: 25px; }
+    .eyebrow { margin: 0 0 8px; color: var(--red); font-size: 11px; font-weight: 800; letter-spacing: .12em; }
+    .panel-head h2 { margin: 0; font-size: 24px; letter-spacing: -.035em; }
+    .panel-head p { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+    .step-pill { padding: 7px 10px; border-radius: 999px; background: #f2f2f3; color: #666870; font-size: 12px; white-space: nowrap; }
+    .field { margin-bottom: 20px; }
+    .field-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; font-size: 14px; font-weight: 700; }
+    .field-label span { color: #8a8c93; font-size: 12px; font-weight: 450; }
+    .input-wrap { position: relative; }
+    .input-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; stroke: #8c8e95; fill: none; stroke-width: 1.8; }
+    .text-input, select { width: 100%; height: 48px; border: 1px solid #d6d7dc; border-radius: 11px; background: white; outline: none; transition: .16s; }
+    .text-input { padding: 0 14px 0 42px; }
+    .text-input:focus, select:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(16,17,22,.06); }
+    .upload-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .upload {
+      min-height: 138px; border: 1px dashed #cfd0d5; border-radius: 13px; background: #fafafa; display: grid; place-items: center; text-align: center; padding: 16px; cursor: pointer; transition: .18s;
+    }
+    .upload:hover { border-color: var(--red); background: #fff9fa; }
+    .upload input { display: none; }
+    .upload-icon { width: 36px; height: 36px; margin: 0 auto 10px; border: 1px solid #dedfe3; border-radius: 10px; display: grid; place-items: center; background: white; }
+    .upload-icon svg { width: 17px; height: 17px; stroke: var(--ink); fill: none; stroke-width: 1.8; }
+    .upload strong { display: block; font-size: 14px; }
+    .upload small { display: block; margin-top: 6px; color: #8a8c94; font-size: 12px; line-height: 1.45; }
+    .upload.has-file { border-style: solid; border-color: #aeb2ff; background: #f6f7ff; }
+    .file-name { max-width: 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .choice-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .choice { border: 1px solid var(--line); border-radius: 9px; padding: 9px 12px; background: #fff; color: #6e7078; font-size: 13px; cursor: pointer; }
+    .choice.active { border-color: var(--ink); background: var(--ink); color: white; }
+    .action-row { margin-top: 26px; padding-top: 20px; border-top: 1px solid #ececef; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .cost { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .cost strong { color: var(--ink); font-size: 14px; }
+    .primary { min-width: 168px; height: 48px; padding: 0 18px; border: 0; border-radius: 11px; background: var(--red); color: white; font-weight: 760; cursor: pointer; box-shadow: 0 8px 20px rgba(242,72,93,.22); }
+    .primary:hover { background: #e53a50; }
+    .primary:disabled { background: #c8c9cd; box-shadow: none; cursor: not-allowed; }
+
+    .preview-panel { position: relative; overflow: hidden; min-height: 660px; background: #17181d; color: white; }
+    .preview-media { position: absolute; inset: 0; }
+    .preview-media img { width: 100%; height: 100%; object-fit: cover; opacity: .76; filter: saturate(.78) contrast(1.03); }
+    .preview-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,11,14,.12), rgba(10,11,14,.12) 45%, rgba(10,11,14,.94)); }
+    .preview-top { position: relative; z-index: 1; display: flex; justify-content: space-between; padding: 20px; }
+    .tag { padding: 7px 9px; background: rgba(12,13,16,.62); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; backdrop-filter: blur(10px); font-size: 11px; }
+    .ratio { color: #d4d5d9; }
+    .preview-bottom { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; padding: 26px; }
+    .preview-bottom .tiny { color: #b4b6bc; font-size: 11px; letter-spacing: .12em; }
+    .preview-bottom h3 { margin: 8px 0 18px; font-size: 24px; letter-spacing: -.03em; }
+    .analysis-list { display: grid; gap: 10px; }
+    .analysis-item { display: grid; grid-template-columns: 8px 1fr auto; align-items: center; gap: 9px; font-size: 12px; color: #d3d4d8; }
+    .analysis-item i { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+    .analysis-item em { color: #8f929b; font-style: normal; }
+
+    .library { margin-top: 22px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; margin-bottom: 14px; }
+    .section-head h3 { margin: 0; font-size: 17px; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .section-head button { border: 0; background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; }
+    .template-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .template { min-height: 118px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: white; cursor: pointer; transition: .18s; }
+    .template:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .template-top { display: flex; justify-content: space-between; margin-bottom: 18px; }
+    .template-badge { color: var(--red); font-size: 11px; font-weight: 800; }
+    .template-score { color: #7b7d85; font-size: 11px; }
+    .template strong { font-size: 14px; }
+    .template p { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+    .image-mode { display: none; }
+    .image-mode.active { display: block; }
+    .video-mode.hidden { display: none; }
+    .image-output { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-top: 15px; }
+    .image-output span { aspect-ratio: 3/4; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; background-image: url('assets/fashion-model.png'); background-size: cover; background-position: center; }
+    .image-output span:nth-child(2) { background-position: 45% center; filter: brightness(.9); }
+    .image-output span:nth-child(3) { background-position: 55% center; filter: grayscale(.45); }
+    .image-output span:nth-child(4) { background-size: 185%; background-position: 48% 20%; }
+    .image-output span:nth-child(5) { background-size: 150%; background-position: 50% 62%; }
+    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 20; min-width: 260px; padding: 14px 16px; border-radius: 12px; background: var(--ink); color: white; box-shadow: var(--shadow); font-size: 13px; opacity: 0; transform: translateY(10px); pointer-events: none; transition: .2s; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .modal { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 20px; background: rgba(11,12,15,.66); backdrop-filter: blur(8px); }
+    .modal.open { display: grid; }
+    .modal-card { width: min(440px, 100%); padding: 28px; border-radius: 18px; background: white; text-align: center; }
+    .spinner { width: 48px; height: 48px; margin: 0 auto 18px; border: 4px solid #eeeef0; border-top-color: var(--red); border-radius: 50%; animation: spin .85s linear infinite; }
+    .modal h3 { margin: 0; font-size: 20px; }
+    .modal p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .progress { height: 7px; margin-top: 18px; border-radius: 999px; background: #ececef; overflow: hidden; }
+    .progress i { display: block; width: 0; height: 100%; background: var(--red); transition: width .4s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 1050px) {
+      .app { grid-template-columns: 82px minmax(0,1fr); }
+      .sidebar { padding-left: 13px; padding-right: 13px; }
+      .brand { justify-content: center; padding-left: 0; padding-right: 0; }
+      .brand div:last-child, .nav-label, .nav button span, .sidebar-foot { display: none; }
+      .nav button { justify-content: center; padding: 12px; }
+      .work-grid { grid-template-columns: 1fr; }
+      .preview-panel { min-height: 520px; }
+    }
+    @media (max-width: 720px) {
+      .app { display: block; }
+      .sidebar { position: fixed; inset: auto 0 0; height: 68px; padding: 8px 14px; flex-direction: row; align-items: center; }
+      .brand { display: none; }
+      .nav { width: 100%; grid-template-columns: repeat(4, 1fr); }
+      .nav button { padding: 9px; }
+      .topbar { height: auto; min-height: 72px; padding: 15px 18px; }
+      .topbar p, .ghost-btn { display: none; }
+      .workspace { padding: 18px 16px 92px; }
+      .mode-switch { grid-template-columns: 1fr; }
+      .mode-card { min-height: 96px; }
+      .form-panel { padding: 20px; }
+      .panel-head h2 { font-size: 21px; }
+      .upload-grid { grid-template-columns: 1fr; }
+      .action-row { align-items: stretch; flex-direction: column; }
+      .primary { width: 100%; }
+      .template-grid { grid-template-columns: 1fr; }
+      .preview-panel { min-height: 520px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">方</div>
+        <div><strong>方舟智创</strong><small>Commerce AI Agent</small></div>
+      </div>
+      <p class="nav-label">创作空间</p>
+      <nav class="nav" aria-label="主导航">
+        <button class="active" data-scroll="creator"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M7 4v6M17 14v6"/></svg><span>智能创作</span></button>
+        <button data-scroll="templates"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>视频模板</span></button>
+        <button data-toast="模特与货盘资产库将在下一阶段接入"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 3l8 4.5-8 4.5zM4 12l8 4.5 8-4.5M4 16.5 12 21l8-4.5"/></svg><span>资产中心</span></button>
+        <button data-toast="任务记录功能已预留"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg><span>生成任务</span></button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="usage"><span>本月算力</span><span>38%</span></div><div class="bar"><i></i></div>
+        <div class="user"><div class="avatar">L</div><span>创作团队<small>企业空间</small></span></div>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div><h1>女装电商视频 Agent</h1><p>把好内容变成可复用、可批量生成的生产力</p></div>
+        <div class="header-actions"><button class="ghost-btn" data-toast="帮助中心正在整理真实操作规范">使用帮助</button><button class="icon-btn" aria-label="通知" data-toast="暂时没有新的通知"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 7 3 7 3 7H3s3 0 3-7M10 20h4"/></svg></button></div>
+      </header>
+
+      <div class="workspace" id="creator">
+        <div class="mode-switch" role="tablist" aria-label="创作模式">
+          <button class="mode-card active" data-mode="video" role="tab" aria-selected="true"><span class="mode-num">01</span><strong>对标视频生成</strong><small>给链接，换成自己的模特、货品与服装</small></button>
+          <button class="mode-card" data-mode="image" role="tab" aria-selected="false"><span class="mode-num">02</span><strong>电商图片生成</strong><small>生成商品详情图与 5 张电商主图</small></button>
+        </div>
+
+        <div class="work-grid video-mode" id="videoMode">
+          <section class="panel form-panel">
+            <div class="panel-head"><div><p class="eyebrow">REFERENCE TO VIDEO</p><h2>做一条我的对标视频</h2><p>系统将提取展示逻辑、镜头和节奏，并替换商品与模特。</p></div><span class="step-pill">3 项输入</span></div>
+            <div class="field">
+              <label class="field-label" for="douyinUrl">抖音对标视频链接 <span>必填</span></label>
+              <div class="input-wrap"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/></svg><input class="text-input" id="douyinUrl" type="url" placeholder="粘贴抖音分享链接" /></div>
+            </div>
+            <div class="upload-grid">
+              <label class="upload" id="faceUpload"><input type="file" accept="image/*" data-file="faceUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg></span><strong>上传模特脸</strong><small class="file-name">正脸清晰、光线均匀<br/>也可从模特库选择</small></div></label>
+              <label class="upload" id="productUpload"><input type="file" accept="image/*" multiple data-file="productUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><path d="M8 7 12 4l4 3 3 1-2 5-2-1v8H9v-8l-2 1-2-5z"/></svg></span><strong>上传货品与服装</strong><small class="file-name">建议正面、背面、细节图<br/>支持多张图片</small></div></label>
+            </div>
+            <div class="field" style="margin-top:20px">
+              <div class="field-label">对标强度 <span>决定保留原视频的程度</span></div>
+              <div class="choice-row"><button class="choice active">高度还原结构</button><button class="choice">保留节奏与动作</button><button class="choice">只参考风格</button></div>
+            </div>
+            <div class="action-row"><div class="cost"><strong>先生成低清预演</strong><br/>确认动作与服装后再消耗高清算力</div><button class="primary" id="videoCreate">解析并生成预演</button></div>
+          </section>
+
+          <aside class="panel preview-panel">
+            <div class="preview-media"><img src="assets/fashion-model.png" alt="女装电商模特示例" /></div>
+            <div class="preview-top"><span class="tag">AI 预演示例</span><span class="tag ratio">9:16 · 15s</span></div>
+            <div class="preview-bottom"><div class="tiny">SYSTEM WILL DISTILL</div><h3>一条链接，拆成可复用的镜头母版</h3><div class="analysis-list"><div class="analysis-item"><i></i><span>前三秒钩子与展示节奏</span><em>自动识别</em></div><div class="analysis-item"><i></i><span>模特动作、走位与运镜</span><em>结构保留</em></div><div class="analysis-item"><i></i><span>人脸、服装与商品替换</span><em>身份锁定</em></div></div></div>
+          </aside>
+        </div>
+
+        <div class="work-grid image-mode" id="imageMode">
+          <section class="panel form-panel">
+            <div class="panel-head"><div><p class="eyebrow">PRODUCT TO IMAGES</p><h2>生成详情图与 5 张主图</h2><p>保持颜色、花纹、版型与工艺一致，批量形成商品视觉。</p></div><span class="step-pill">2 项输入</span></div>
+            <div class="upload-grid">
+              <label class="upload" id="imageFaceUpload"><input type="file" accept="image/*" data-file="imageFaceUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg></span><strong>选择目标模特</strong><small class="file-name">上传模特脸<br/>或使用企业模特资产</small></div></label>
+              <label class="upload" id="imageProductUpload"><input type="file" accept="image/*" multiple data-file="imageProductUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><path d="M8 7 12 4l4 3 3 1-2 5-2-1v8H9v-8l-2 1-2-5z"/></svg></span><strong>选择目标商品</strong><small class="file-name">上传货盘图片<br/>正背面与细节越全越好</small></div></label>
+            </div>
+            <div class="field" style="margin-top:20px">
+              <div class="field-label">图片风格 <span>详情图与主图保持统一</span></div>
+              <div class="choice-row"><button class="choice active">高质感棚拍</button><button class="choice">自然街拍</button><button class="choice">高级商场</button><button class="choice">极简纯色</button></div>
+            </div>
+            <div class="field"><label class="field-label" for="platform">投放平台 <span>自动适配画幅</span></label><select id="platform"><option>抖音电商 · 3:4</option><option>淘宝 / 天猫 · 1:1</option><option>小红书 · 3:4</option></select></div>
+            <div class="action-row"><div class="cost"><strong>预计输出 5＋8 张</strong><br/>5 张主图与约 8 张详情展示图</div><button class="primary" id="imageCreate">生成整套商品图</button></div>
+          </section>
+          <aside class="panel preview-panel">
+            <div class="preview-media"><img src="assets/fashion-model.png" alt="女装商品图示例" /></div>
+            <div class="preview-top"><span class="tag">商品图组合</span><span class="tag ratio">5 主图 + 详情图</span></div>
+            <div class="preview-bottom"><div class="tiny">CONSISTENT PRODUCT DETAIL</div><h3>同一模特、同一商品、完整展示</h3><div class="image-output" aria-label="五张主图预览"><span></span><span></span><span></span><span></span><span></span></div></div>
+          </aside>
+        </div>
+
+        <section class="library" id="templates">
+          <div class="section-head"><div><h3>首批蒸馏模板</h3><p>未来由团队历史数据最好的 100 条女装视频持续补充</p></div><button data-toast="完整模板库将在样本导入后开放">查看全部 →</button></div>
+          <div class="template-grid">
+            <article class="template"><div class="template-top"><span class="template-badge">显瘦展示</span><span class="template-score">待样本验证</span></div><strong>正面入场 · 侧身转体</strong><p>适合连衣裙、半身裙，重点展示腰线和垂感。</p></article>
+            <article class="template"><div class="template-top"><span class="template-badge">质感近景</span><span class="template-score">待样本验证</span></div><strong>全身建立 · 面料细节</strong><p>适合针织与外套，突出材质、袖口与工艺。</p></article>
+            <article class="template"><div class="template-top"><span class="template-badge">街拍节奏</span><span class="template-score">待样本验证</span></div><strong>走动跟拍 · 回身定格</strong><p>适合日常穿搭，兼顾生活感与商品完整露出。</p></article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card"><div class="spinner"></div><h3 id="modalTitle">正在建立生成任务</h3><p id="modalText">系统正在检查素材完整度并拆解生产步骤。</p><div class="progress"><i id="progressBar"></i></div></div>
+  </div>
+  <script>
+    const modes = document.querySelectorAll('[data-mode]');
+    const videoMode = document.getElementById('videoMode');
+    const imageMode = document.getElementById('imageMode');
+    modes.forEach(btn => btn.addEventListener('click', () => {
+      modes.forEach(item => { item.classList.toggle('active', item === btn); item.setAttribute('aria-selected', item === btn); });
+      const isVideo = btn.dataset.mode === 'video';
+      videoMode.classList.toggle('hidden', !isVideo);
+      imageMode.classList.toggle('active', !isVideo);
+      window.localStorage.setItem('ark-agent-mode', btn.dataset.mode);
+    }));
+    const savedMode = window.localStorage.getItem('ark-agent-mode');
+    if (savedMode === 'image') document.querySelector('[data-mode="image"]').click();
+
+    document.querySelectorAll('.choice-row').forEach(row => row.addEventListener('click', e => {
+      if (!e.target.classList.contains('choice')) return;
+      row.querySelectorAll('.choice').forEach(item => item.classList.toggle('active', item === e.target));
+    }));
+
+    document.querySelectorAll('[data-file]').forEach(input => input.addEventListener('change', () => {
+      const box = document.getElementById(input.dataset.file);
+      const target = box.querySelector('.file-name');
+      if (!input.files.length) return;
+      box.classList.add('has-file');
+      target.textContent = input.files.length === 1 ? input.files[0].name : `已选择 ${input.files.length} 个文件`;
+    }));
+
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    function showToast(message) {
+      toast.textContent = message; toast.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+    document.querySelectorAll('[data-toast]').forEach(el => el.addEventListener('click', () => showToast(el.dataset.toast)));
+    document.querySelectorAll('[data-scroll]').forEach(el => el.addEventListener('click', () => {
+      const target = document.getElementById(el.dataset.scroll); if (target) target.scrollIntoView({behavior:'smooth'});
+      document.querySelectorAll('.nav button').forEach(item => item.classList.toggle('active', item === el));
+    }));
+
+    function simulate(type) {
+      const modal = document.getElementById('modal');
+      const bar = document.getElementById('progressBar');
+      const title = document.getElementById('modalTitle');
+      const text = document.getElementById('modalText');
+      title.textContent = type === 'video' ? '正在解析对标视频' : '正在建立商品图任务';
+      text.textContent = type === 'video' ? '首版框架已接收输入；真实解析与生成接口将在下一阶段接入。' : '首版框架已接收模特与商品；真实图片生成接口将在下一阶段接入。';
+      modal.classList.add('open'); bar.style.width = '12%';
+      setTimeout(() => bar.style.width = '68%', 350);
+      setTimeout(() => bar.style.width = '100%', 950);
+      setTimeout(() => { modal.classList.remove('open'); bar.style.width = '0'; showToast('任务框架运行正常，下一步接入真实生成能力'); }, 1700);
+    }
+    document.getElementById('videoCreate').addEventListener('click', () => {
+      const url = document.getElementById('douyinUrl').value.trim();
+      if (!url) { showToast('请先粘贴一条抖音对标视频链接'); document.getElementById('douyinUrl').focus(); return; }
+      simulate('video');
+    });
+    document.getElementById('imageCreate').addEventListener('click', () => simulate('image'));
+    document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') e.currentTarget.classList.remove('open'); });
+
+    // Expose the same two visible setup flows to compatible AI browsers.
+    const modelContext = document.modelContext;
+    if (modelContext && typeof modelContext.registerTool === 'function') {
+      const register = tool => Promise.resolve(modelContext.registerTool(tool)).catch(() => {});
+      register({
+        name: 'stage_reference_video_task',
+        title: '配置对标视频任务',
+        description: '打开对标视频模式，填入抖音参考链接并选择对标强度；不会上传素材或开始真实生成。',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            referenceUrl: { type: 'string', description: '抖音对标视频链接' },
+            strategy: { type: 'string', enum: ['高度还原结构', '保留节奏与动作', '只参考风格'] }
+          },
+          required: ['referenceUrl'],
+          additionalProperties: false
+        },
+        annotations: { readOnlyHint: false, untrustedContentHint: true },
+        execute(input) {
+          if (!input || typeof input.referenceUrl !== 'string' || !input.referenceUrl.trim()) throw new Error('referenceUrl 不能为空');
+          document.querySelector('[data-mode="video"]').click();
+          document.getElementById('douyinUrl').value = input.referenceUrl.trim();
+          if (input.strategy) {
+            const buttons = [...document.querySelectorAll('#videoMode .choice')];
+            const selected = buttons.find(button => button.textContent.trim() === input.strategy);
+            if (!selected) throw new Error('不支持的对标强度');
+            selected.click();
+          }
+          document.getElementById('douyinUrl').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return { status: 'staged', mode: 'reference_video', referenceUrl: input.referenceUrl.trim(), strategy: input.strategy || '高度还原结构' };
+        }
+      });
+      register({
+        name: 'stage_product_image_task',
+        title: '配置商品图任务',
+        description: '打开电商图片模式并选择图片风格和投放平台；不会上传素材或开始真实生成。',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            style: { type: 'string', enum: ['高质感棚拍', '自然街拍', '高级商场', '极简纯色'] },
+            platform: { type: 'string', enum: ['抖音电商 · 3:4', '淘宝 / 天猫 · 1:1', '小红书 · 3:4'] }
+          },
+          additionalProperties: false
+        },
+        annotations: { readOnlyHint: false, untrustedContentHint: false },
+        execute(input = {}) {
+          document.querySelector('[data-mode="image"]').click();
+          if (input.style) {
+            const buttons = [...document.querySelectorAll('#imageMode .choice')];
+            const selected = buttons.find(button => button.textContent.trim() === input.style);
+            if (!selected) throw new Error('不支持的图片风格');
+            selected.click();
+          }
+          if (input.platform) {
+            const select = document.getElementById('platform');
+            if (![...select.options].some(option => option.value === input.platform)) throw new Error('不支持的投放平台');
+            select.value = input.platform;
+          }
+          document.getElementById('imageMode').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return { status: 'staged', mode: 'product_images', style: input.style || '高质感棚拍', platform: input.platform || '抖音电商 · 3:4' };
+        }
+      });
+    }
+  </script>
+</body>
+</html>
