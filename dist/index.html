@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0b0c0f" />
-  <meta name="description" content="方舟智创旗下女装电商视频 Agent：从对标视频获取、本地人脸与发型打码，到自有模特、场景和商品的可控重建。" />
+  <meta name="description" content="方舟智创旗下女装电商视频 Agent：导入参考视频，选择自有模特、商品、场景与成片参数，生成新的电商视频。" />
   <title>方舟女装电商视频 Agent</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0c0f'/%3E%3Cpath d='M7 21.5 16 6l9 15.5-9 4.5z' fill='%23ff4d5f'/%3E%3Cpath d='M16 11v10M11.5 18.5H21' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E" />
   <style>
@@ -134,13 +134,6 @@
     .generation-grid { display: grid; grid-template-columns: 1.25fr .8fr .8fr; gap: 10px; }
     .generation-grid label { display: grid; gap: 8px; color: #5e6068; font-size: 12px; font-weight: 700; }
     .generation-grid select { padding: 0 12px; color: var(--ink); }
-    .pipeline { margin: 20px 0; padding: 15px 14px; border-radius: 13px; background: #f4f4f6; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 7px; }
-    .pipe-step { position: relative; min-height: 64px; padding: 9px 8px 8px 28px; border-radius: 9px; background: white; border: 1px solid #e4e4e8; }
-    .pipe-step::after { content: "→"; position: absolute; right: -10px; top: 21px; z-index: 1; color: #aaabb2; font-size: 12px; }
-    .pipe-step:last-child::after { display: none; }
-    .pipe-step b { position: absolute; left: 8px; top: 10px; color: var(--red); font-size: 10px; }
-    .pipe-step strong { display: block; font-size: 12px; line-height: 1.4; }
-    .pipe-step small { display: block; margin-top: 4px; color: #8a8c94; font-size: 10px; line-height: 1.35; }
     .action-row { margin-top: 26px; padding-top: 20px; border-top: 1px solid #ececef; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
     .cost { color: var(--muted); font-size: 12px; line-height: 1.5; }
     .cost strong { color: var(--ink); font-size: 14px; }
@@ -241,8 +234,6 @@
       .source-grid { grid-template-columns: 1fr; }
       .generation-grid { grid-template-columns: 1fr; }
       .mini-upload { width: 100%; }
-      .pipeline { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .pipe-step:nth-child(2)::after { display: none; }
       .asset-grid { grid-template-columns: 1fr 1fr; }
       .action-row { align-items: stretch; flex-direction: column; }
       .primary { width: 100%; }
@@ -273,19 +264,19 @@
 
     <main>
       <header class="topbar">
-        <div><h1>女装电商视频 Agent</h1><p>把对标视频去身份化，再用自己的模特、商品和场景可控重建</p></div>
+        <div><h1>女装电商视频 Agent</h1><p>导入参考，选好模特、商品和场景，直接生成新成片</p></div>
         <div class="header-actions"><button class="ghost-btn" data-toast="帮助中心正在整理真实操作规范">使用帮助</button><button class="icon-btn" aria-label="通知" data-toast="暂时没有新的通知"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 7 3 7 3 7H3s3 0 3-7M10 20h4"/></svg></button></div>
       </header>
 
       <div class="workspace" id="creator">
         <div class="mode-switch" role="tablist" aria-label="创作模式">
-          <button class="mode-card active" data-mode="video" role="tab" aria-selected="true"><span class="mode-num">01</span><strong>对标视频重建</strong><small>获取对标原片，本地打码，再按选定的模特、场景、动作与质感生成</small></button>
+          <button class="mode-card active" data-mode="video" role="tab" aria-selected="true"><span class="mode-num">01</span><strong>对标视频重建</strong><small>选择自有模特、穿搭、场景与成片参数，生成新视频</small></button>
           <button class="mode-card" data-mode="image" role="tab" aria-selected="false"><span class="mode-num">02</span><strong>电商图片生成</strong><small>生成商品详情图与 5 张电商主图</small></button>
         </div>
 
         <div class="work-grid video-mode" id="videoMode">
           <section class="panel form-panel">
-            <div class="panel-head"><div><p class="eyebrow">REFERENCE TO REBUILD</p><h2>用我的模特重建对标视频</h2><p>参考视频只提供可选的动作、场景和画面规律，原人物会先在本地完成脱敏。</p></div><span class="step-pill">6 步生产链</span></div>
+            <div class="panel-head"><div><p class="eyebrow">REFERENCE TO VIDEO</p><h2>用我的模特生成新视频</h2><p>导入参考内容，再决定场景、动作、画面质感和成片规格。</p></div><span class="step-pill">按需设置</span></div>
             <div class="source-tabs" role="tablist" aria-label="视频生成方式">
               <button class="source-tab active" data-video-source="reference" role="tab" aria-selected="true">对标视频模式</button>
               <button class="source-tab" data-video-source="prompt" role="tab" aria-selected="false">提示词模式</button>
@@ -297,7 +288,7 @@
                   <div class="input-wrap"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/></svg><input class="text-input" id="douyinUrl" type="url" placeholder="粘贴对标网页或视频分享链接" /></div>
                   <label class="mini-upload" id="originalVideoUpload"><input type="file" accept="video/*" data-file="originalVideoUpload"/><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg><span class="file-name">上传原视频</span></label>
                 </div>
-                <p class="field-note">链接模式先解析页面并获取可用原片；本地文件则直接进入打码。获取失败时会要求手动上传，不会伪造素材。</p>
+                <p class="field-note">如果链接无法读取，系统会提示你改为手动上传视频。</p>
               </div>
             </div>
             <div class="source-panel hidden" id="promptSource">
@@ -328,11 +319,11 @@
             </div>
             <div class="field" style="margin-top:20px">
               <label class="field-label" for="referencePrompt">补充提示词 <span>可选：补充镜头、表演、光线或生成禁区</span></label>
-              <div class="prompt-box"><textarea id="referencePrompt" placeholder="例如：保留原片的走位，但把环境改为高级商场；镜头更稳，服装面料细节优先……"></textarea><div class="prompt-tools"><small>会与上方选项一起组装成模型 API 任务</small></div></div>
+              <div class="prompt-box"><textarea id="referencePrompt" placeholder="例如：保留参考视频的走位，但把环境改为高级商场；镜头更稳，服装面料细节优先……"></textarea><div class="prompt-tools"><small>作为本次成片的补充创作要求</small></div></div>
             </div>
             </div>
             <div class="control-card" style="margin-bottom:20px">
-              <div class="field-label">7. 选择成片参数 <span>只生成一次，不做无法保证一致的低清预演</span></div>
+              <div class="field-label">7. 选择成片参数 <span>提交后直接生成最终成片</span></div>
               <div class="generation-grid">
                 <label>视频模型<select id="videoModel"><option>Seedance · 动作与运镜优先</option><option>Kling · 主体一致性优先</option><option>MiniMax · 生成速度优先</option></select></label>
                 <label>清晰度<select id="videoResolution"><option>480p</option><option selected>720p</option><option>1080p</option></select></label>
@@ -340,19 +331,13 @@
               </div>
               <p class="field-note">提交后直接生成所选清晰度和时长的最终版；若需要改动作或构图，会作为新任务重新生成。</p>
             </div>
-            <div class="pipeline" id="videoPipeline" aria-label="视频生成流程">
-              <div class="pipe-step"><b>01</b><strong>获取对标</strong><small>网页解析或本地视频</small></div>
-              <div class="pipe-step"><b>02</b><strong>本地追踪打码</strong><small>原脸＋完整发型</small></div>
-              <div class="pipe-step"><b>03</b><strong>组装生成条件</strong><small>模特＋穿搭＋场景</small></div>
-              <div class="pipe-step"><b>04</b><strong>调用视频模型</strong><small>动作＋质感＋提示词</small></div>
-            </div>
-            <div class="action-row"><div class="cost" id="videoCost"><strong>本地打码不消耗生成额度</strong><br/>生成费用按所选模型、清晰度与时长在提交前计算</div><button class="primary" id="videoCreate">直接生成最终成片</button></div>
+            <div class="action-row"><div class="cost" id="videoCost"><strong>生成前确认费用</strong><br/>按所选模型、清晰度与时长计算</div><button class="primary" id="videoCreate">直接生成最终成片</button></div>
           </section>
 
           <aside class="panel preview-panel">
             <div class="preview-media"><img src="assets/fashion-model.png" alt="女装电商模特示例" /></div>
-            <div class="preview-top"><span class="tag">AI 预演示例</span><span class="tag ratio">9:16 · 15s</span></div>
-            <div class="preview-bottom"><div class="tiny">ACQUIRE → LOCAL MASK → CONTROLLED REBUILD</div><h3>先去身份化，再按你的选择重建</h3><div class="analysis-list"><div class="analysis-item"><i></i><span>本地追踪并覆盖原人脸与完整发型</span><em>原片不上传</em></div><div class="analysis-item"><i></i><span>三视图锁定自有模特的脸型和身份</span><em>一致性</em></div><div class="analysis-item"><i></i><span>场景、动作、画质都可分别选择是否模仿</span><em>可控</em></div><div class="analysis-item"><i></i><span>选项与补充提示词组装后调用模型 API</span><em>可扩展</em></div></div></div>
+            <div class="preview-top"><span class="tag">AI 成片示例</span><span class="tag ratio">9:16 · 15s</span></div>
+            <div class="preview-bottom"><div class="tiny">YOUR MODEL · YOUR PRODUCT · YOUR CHOICE</div><h3>同一条参考，生成适合你的新成片</h3><div class="analysis-list"><div class="analysis-item"><i></i><span>使用自有模特与目标穿搭</span><em>身份一致</em></div><div class="analysis-item"><i></i><span>原场景或自定义场景</span><em>任选</em></div><div class="analysis-item"><i></i><span>动作和画面质感可独立设置</span><em>可控</em></div><div class="analysis-item"><i></i><span>选择模型、清晰度与时长</span><em>直接成片</em></div></div></div>
           </aside>
         </div>
 
@@ -440,18 +425,8 @@
     const referenceSource = document.getElementById('referenceSource');
     const promptSource = document.getElementById('promptSource');
     const referenceControls = document.getElementById('referenceControls');
-    const videoPipeline = document.getElementById('videoPipeline');
     const videoCost = document.getElementById('videoCost');
     const videoCreate = document.getElementById('videoCreate');
-    const referenceSteps = [
-      ['01','获取对标','网页或视频'], ['02','本地追踪打码','原脸＋完整发型'], ['03','组装生成条件','模特＋穿搭＋场景'], ['04','直接生成成片','模型＋清晰度＋时长']
-    ];
-    const promptSteps = [
-      ['01','输入生成想法','自然语言描述'], ['02','优化提示词','镜头＋动作＋场景'], ['03','植入目标人脸','身份一致'], ['04','植入目标穿搭','商品细节保持']
-    ];
-    function renderPipeline(steps) {
-      videoPipeline.innerHTML = steps.map(step => `<div class="pipe-step"><b>${step[0]}</b><strong>${step[1]}</strong><small>${step[2]}</small></div>`).join('');
-    }
     sourceTabs.forEach(btn => btn.addEventListener('click', () => {
       videoSourceMode = btn.dataset.videoSource;
       sourceTabs.forEach(item => { item.classList.toggle('active', item === btn); item.setAttribute('aria-selected', item === btn); });
@@ -459,8 +434,7 @@
       referenceSource.classList.toggle('hidden', !usesReference);
       promptSource.classList.toggle('hidden', usesReference);
       referenceControls.classList.toggle('hidden', !usesReference);
-      renderPipeline(usesReference ? referenceSteps : promptSteps);
-      videoCost.innerHTML = usesReference ? '<strong>本地打码不消耗生成额度</strong><br/>生成费用按所选模型、清晰度与时长在提交前计算' : '<strong>优化提示词后直接生成成片</strong><br/>不另外生成无法保证一致的低清预演';
+      videoCost.innerHTML = usesReference ? '<strong>生成前确认费用</strong><br/>按所选模型、清晰度与时长计算' : '<strong>直接生成最终成片</strong><br/>按所选模型、清晰度与时长计算';
       videoCreate.textContent = '直接生成最终成片';
     }));
 
@@ -531,16 +505,9 @@
       const resolution = document.getElementById('videoResolution').value;
       const duration = document.getElementById('videoDuration').value;
       const model = document.getElementById('videoModel').value.split(' · ')[0];
-      const phases = type === 'video' && videoSourceMode === 'reference' ? [
-        ['正在读取对标视频', '准备分析镜头、人物与音频。', '16%'],
-        ['正在本地追踪打码', '覆盖原人物脸部与完整发型，不上传原视频。', '46%'],
-        ['正在组装重建任务', '合并模特三视图、穿搭、场景与可控选项。', '70%'],
-        [`正在提交 ${model} 成片任务`, `直接生成 ${resolution} · ${duration}，不另做低清预演。`, '92%']
-      ] : type === 'video' ? [
-        ['正在读取提示词', '分析场景、镜头、动作与商品要求。', '18%'],
-        ['正在建立人物镜头', '锁定目标模特身份与动作连续性。', '48%'],
-        ['正在植入目标穿搭', '保持服装版型、颜色与纹理。', '76%'],
-        [`正在提交 ${model} 成片任务`, `直接生成 ${resolution} · ${duration}。`, '92%']
+      const phases = type === 'video' ? [
+        ['正在创建成片任务', '已确认素材与你选择的生成参数。', '38%'],
+        [`正在生成最终成片`, `${model} · ${resolution} · ${duration}`, '92%']
       ] : [
         ['正在建立商品图任务', '正在检查模特与商品素材。', '22%'],
         ['正在规划五张主图', '为不同商品展示角度分配画面。', '66%'],
@@ -549,7 +516,7 @@
       modal.classList.add('open');
       phases.forEach((phase, index) => setTimeout(() => { title.textContent = phase[0]; text.textContent = phase[1]; bar.style.width = phase[2]; }, index * 430));
       setTimeout(() => { bar.style.width = '100%'; }, phases.length * 430);
-      setTimeout(() => { modal.classList.remove('open'); bar.style.width = '0'; showToast('成片任务参数已组装，下一步接入真实模型 API'); }, phases.length * 430 + 650);
+      setTimeout(() => { modal.classList.remove('open'); bar.style.width = '0'; showToast('生成任务交互已完成，当前版本为产品原型'); }, phases.length * 430 + 650);
     }
     videoCreate.addEventListener('click', () => {
       const url = document.getElementById('douyinUrl').value.trim();
