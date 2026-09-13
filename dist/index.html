@@ -278,12 +278,19 @@
           <section class="panel form-panel">
             <div class="panel-head"><div><p class="eyebrow">REFERENCE TO VIDEO</p><h2>用我的模特生成新视频</h2><p>导入参考内容，再决定场景、动作、画面质感和成片规格。</p></div><span class="step-pill">按需设置</span></div>
             <div class="source-tabs" role="tablist" aria-label="视频生成方式">
-              <button class="source-tab active" data-video-source="reference" role="tab" aria-selected="true">对标视频模式</button>
+              <button class="source-tab active" data-video-source="reference" role="tab" aria-selected="true">爆款复刻</button>
               <button class="source-tab" data-video-source="prompt" role="tab" aria-selected="false">提示词模式</button>
             </div>
             <div class="source-panel" id="referenceSource">
               <div class="field">
-                <label class="field-label" for="douyinUrl">1. 提供对标网页或视频 <span>网页链接、分享链接与本地文件任选一种</span></label>
+                <div class="field-label">生成方式 <span>选择本次需要替换的内容</span></div>
+                <div class="source-tabs" id="replaceModeTabs" role="tablist" aria-label="替换方式">
+                  <button class="source-tab" data-replace-mode="model" role="tab" aria-selected="false">只换模特</button>
+                  <button class="source-tab active" data-replace-mode="model-outfit" role="tab" aria-selected="true">换模特和服装</button>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field-label" for="douyinUrl">1. 选择参考视频 <span>用于参考动作、运镜和背景</span></label>
                 <div class="source-grid">
                   <div class="input-wrap"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/></svg><input class="text-input" id="douyinUrl" type="url" placeholder="粘贴对标网页或视频分享链接" /></div>
                   <label class="mini-upload" id="originalVideoUpload"><input type="file" accept="video/*" data-file="originalVideoUpload"/><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg><span class="file-name">上传原视频</span></label>
@@ -298,8 +305,8 @@
               </div>
             </div>
             <div class="upload-grid">
-              <div class="asset-source"><label class="upload" id="faceUpload"><input type="file" accept="image/*" multiple data-file="faceUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg></span><strong>2. 上传自有模特三视图</strong><small class="file-name">正面、左侧、右侧，表情与光线尽量统一<br/>用于锁定脸型与身份一致性</small></div></label><div class="asset-actions"><button class="asset-pick" type="button" data-asset-type="model" data-asset-target="faceUpload">从资产中心选择</button><label class="save-asset"><input type="checkbox"/> 保存入库</label></div></div>
-              <div class="asset-source"><label class="upload" id="productUpload"><input type="file" accept="image/*" multiple data-file="productUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><path d="M8 7 12 4l4 3 3 1-2 5-2-1v8H9v-8l-2 1-2-5z"/></svg></span><strong>3. 上传目标穿搭</strong><small class="file-name">正面、背面、细节图<br/>用于重建商品版型与纹理</small></div></label><div class="asset-actions"><button class="asset-pick" type="button" data-asset-type="outfit" data-asset-target="productUpload">从资产中心选择</button><label class="save-asset"><input type="checkbox"/> 保存入库</label></div></div>
+              <div class="asset-source"><label class="upload" id="faceUpload"><input type="file" accept="image/*" multiple data-file="faceUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg></span><strong>2. 上传模特图</strong><small class="file-name">可上传 1–3 张，正面、左侧、右侧越齐全越稳定<br/>分辨率建议大于 400 × 400</small></div></label><div class="asset-actions"><button class="asset-pick" type="button" data-asset-type="model" data-asset-target="faceUpload">从资产中心选择</button><label class="save-asset"><input type="checkbox"/> 保存入库</label></div></div>
+              <div class="asset-source" id="productAssetSource"><label class="upload" id="productUpload"><input type="file" accept="image/*" multiple data-file="productUpload"/><div><span class="upload-icon"><svg viewBox="0 0 24 24"><path d="M8 7 12 4l4 3 3 1-2 5-2-1v8H9v-8l-2 1-2-5z"/></svg></span><strong>3. 上传目标服装</strong><small class="file-name">正面、背面、面料与工艺细节<br/>用于保持商品版型与纹理</small></div></label><div class="asset-actions"><button class="asset-pick" type="button" data-asset-type="outfit" data-asset-target="productUpload">从资产中心选择</button><label class="save-asset"><input type="checkbox"/> 保存入库</label></div></div>
             </div>
             <div id="referenceControls">
             <div class="control-stack" style="margin-top:20px">
@@ -309,16 +316,20 @@
                 <div class="scene-upload hidden" id="sceneUploadField"><label class="mini-upload" id="sceneUpload"><input type="file" accept="image/*" data-file="sceneUpload"/><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg><span class="file-name">选择场景参考图</span></label></div>
               </div>
               <div class="control-card">
-                <div class="field-label">5. 动作生成方式 <span>可以复刻，也可以重新设计</span></div>
-                <div class="choice-row" id="actionChoices"><button class="choice active" aria-pressed="true">模仿对标动作</button><button class="choice" aria-pressed="false">重新设计动作</button></div>
+                <div class="field-label">5. 替换区域 <span>按成片目标选择</span></div>
+                <div class="choice-row" id="replaceAreaChoices"><button class="choice" aria-pressed="false">换脸</button><button class="choice" aria-pressed="false">换头</button><button class="choice active" aria-pressed="true">换全身</button></div>
               </div>
               <div class="control-card">
-                <div class="field-label">6. 画面质感 <span>参考的是视觉规律，不是复制成片</span></div>
-                <div class="choice-row" id="qualityChoices"><button class="choice active" aria-pressed="true">模仿对标画质</button><button class="choice" aria-pressed="false">重新定义画质</button></div>
+                <div class="field-label">6. 生成效果 <span>决定动作和运镜的参考强度</span></div>
+                <div class="choice-row" id="effectChoices"><button class="choice active" aria-pressed="true">更自然</button><button class="choice" aria-pressed="false">更像参考</button><button class="choice" aria-pressed="false">重新设计</button></div>
+              </div>
+              <div class="control-card">
+                <div class="field-label">生成质量 <span>专业模式用时和费用更高</span></div>
+                <div class="choice-row" id="qualityChoices"><button class="choice active" aria-pressed="true">均衡</button><button class="choice" aria-pressed="false">专业</button></div>
               </div>
             </div>
             <div class="field" style="margin-top:20px">
-              <label class="field-label" for="referencePrompt">补充提示词 <span>可选：补充镜头、表演、光线或生成禁区</span></label>
+              <label class="field-label" for="referencePrompt">补充提示词 <span>可选：补充动作、运镜、光线或禁区</span></label>
               <div class="prompt-box"><textarea id="referencePrompt" placeholder="例如：保留参考视频的走位，但把环境改为高级商场；镜头更稳，服装面料细节优先……"></textarea><div class="prompt-tools"><small>作为本次成片的补充创作要求</small></div></div>
             </div>
             </div>
@@ -337,7 +348,7 @@
           <aside class="panel preview-panel">
             <div class="preview-media"><img src="assets/fashion-model.png" alt="女装电商模特示例" /></div>
             <div class="preview-top"><span class="tag">AI 成片示例</span><span class="tag ratio">9:16 · 15s</span></div>
-            <div class="preview-bottom"><div class="tiny">YOUR MODEL · YOUR PRODUCT · YOUR CHOICE</div><h3>同一条参考，生成适合你的新成片</h3><div class="analysis-list"><div class="analysis-item"><i></i><span>使用自有模特与目标穿搭</span><em>身份一致</em></div><div class="analysis-item"><i></i><span>原场景或自定义场景</span><em>任选</em></div><div class="analysis-item"><i></i><span>动作和画面质感可独立设置</span><em>可控</em></div><div class="analysis-item"><i></i><span>选择模型、清晰度与时长</span><em>直接成片</em></div></div></div>
+            <div class="preview-bottom"><div class="tiny">YOUR MODEL · YOUR PRODUCT · YOUR CHOICE</div><h3>一张模特图＋一条参考视频，生成新成片</h3><div class="analysis-list"><div class="analysis-item"><i></i><span>只换模特，或同时替换模特和服装</span><em>任选</em></div><div class="analysis-item"><i></i><span>换脸、换头、换全身</span><em>可控</em></div><div class="analysis-item"><i></i><span>更自然、更像参考或重新设计</span><em>强度</em></div><div class="analysis-item"><i></i><span>选择场景、模型、清晰度与时长</span><em>直接成片</em></div></div></div>
           </aside>
         </div>
 
@@ -427,6 +438,16 @@
     const referenceControls = document.getElementById('referenceControls');
     const videoCost = document.getElementById('videoCost');
     const videoCreate = document.getElementById('videoCreate');
+    let replaceMode = 'model-outfit';
+    const replaceModeTabs = document.querySelectorAll('[data-replace-mode]');
+    replaceModeTabs.forEach(btn => btn.addEventListener('click', () => {
+      replaceMode = btn.dataset.replaceMode;
+      replaceModeTabs.forEach(item => {
+        item.classList.toggle('active', item === btn);
+        item.setAttribute('aria-selected', item === btn);
+      });
+      document.getElementById('productAssetSource').classList.toggle('hidden', replaceMode === 'model');
+    }));
     sourceTabs.forEach(btn => btn.addEventListener('click', () => {
       videoSourceMode = btn.dataset.videoSource;
       sourceTabs.forEach(item => { item.classList.toggle('active', item === btn); item.setAttribute('aria-selected', item === btn); });
@@ -522,8 +543,12 @@
       const url = document.getElementById('douyinUrl').value.trim();
       const localVideo = document.querySelector('#originalVideoUpload input').files.length > 0;
       const prompt = document.getElementById('videoPrompt').value.trim();
+      const hasModel = document.querySelector('#faceUpload input').files.length > 0 || document.getElementById('faceUpload').dataset.assetName;
+      const hasOutfit = document.querySelector('#productUpload input').files.length > 0 || document.getElementById('productUpload').dataset.assetName;
       if (videoSourceMode === 'reference' && !url && !localVideo) { showToast('请粘贴对标网页、视频链接或上传原视频'); document.getElementById('douyinUrl').focus(); return; }
       if (videoSourceMode === 'prompt' && !prompt) { showToast('请先描述想生成的视频'); document.getElementById('videoPrompt').focus(); return; }
+      if (!hasModel) { showToast('请上传模特图或从资产中心选择模特'); document.getElementById('faceUpload').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      if (replaceMode === 'model-outfit' && !hasOutfit) { showToast('当前选择了“换模特和服装”，请提供目标服装'); document.getElementById('productUpload').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
       simulate('video');
     });
     document.getElementById('imageCreate').addEventListener('click', () => simulate('image'));
@@ -535,13 +560,20 @@
       const register = tool => Promise.resolve(modelContext.registerTool(tool)).catch(() => {});
       register({
         name: 'stage_reference_video_task',
-        title: '配置对标视频任务',
-        description: '打开对标视频模式，填入抖音参考链接并多选需要保留的对标元素；不会上传素材或开始真实生成。',
+        title: '配置爆款复刻任务',
+        description: '打开爆款复刻模式，填入参考链接并配置替换范围、生成效果与成片参数；不会上传素材或开始真实生成。',
         inputSchema: {
           type: 'object',
           properties: {
-            referenceUrl: { type: 'string', description: '抖音对标视频链接' },
-            retainElements: { type: 'array', items: { type: 'string', enum: ['镜头结构', '节奏与动作', '画面风格'] }, uniqueItems: true }
+            referenceUrl: { type: 'string', description: '参考网页或视频链接' },
+            replaceMode: { type: 'string', enum: ['只换模特', '换模特和服装'] },
+            replaceArea: { type: 'string', enum: ['换脸', '换头', '换全身'] },
+            effect: { type: 'string', enum: ['更自然', '更像参考', '重新设计'] },
+            quality: { type: 'string', enum: ['均衡', '专业'] },
+            scene: { type: 'string', enum: ['使用原场景', '上传新场景图'] },
+            model: { type: 'string', enum: ['Seedance', 'Kling', 'MiniMax'] },
+            resolution: { type: 'string', enum: ['480p', '720p', '1080p'] },
+            duration: { type: 'string', enum: ['5 秒', '10 秒', '15 秒'] }
           },
           required: ['referenceUrl'],
           additionalProperties: false
@@ -552,17 +584,39 @@
           document.querySelector('[data-mode="video"]').click();
           document.querySelector('[data-video-source="reference"]').click();
           document.getElementById('douyinUrl').value = input.referenceUrl.trim();
-          if (input.retainElements) {
-            const buttons = [...document.querySelectorAll('#referenceDimensions .choice')];
-            buttons.forEach(button => { button.classList.remove('active'); button.setAttribute('aria-pressed','false'); });
-            input.retainElements.forEach(name => {
-              const selected = buttons.find(button => button.textContent.trim() === name);
-              if (!selected) throw new Error('包含不支持的对标元素');
-              selected.classList.add('active'); selected.setAttribute('aria-pressed','true');
-            });
+          const choose = (selector, label) => {
+            if (!label) return;
+            const selected = [...document.querySelectorAll(selector)].find(button => button.textContent.trim() === label);
+            if (!selected) throw new Error(`不支持的选项：${label}`);
+            selected.click();
+          };
+          choose('[data-replace-mode]', input.replaceMode);
+          choose('#replaceAreaChoices .choice', input.replaceArea);
+          choose('#effectChoices .choice', input.effect);
+          choose('#qualityChoices .choice', input.quality);
+          choose('#sceneChoices .choice', input.scene);
+          if (input.model) {
+            const select = document.getElementById('videoModel');
+            const option = [...select.options].find(item => item.value.startsWith(input.model));
+            if (!option) throw new Error('不支持的视频模型');
+            select.value = option.value;
           }
+          if (input.resolution) document.getElementById('videoResolution').value = input.resolution;
+          if (input.duration) document.getElementById('videoDuration').value = input.duration;
           document.getElementById('douyinUrl').scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return { status: 'staged', mode: 'reference_video', referenceUrl: input.referenceUrl.trim(), retainElements: input.retainElements || ['镜头结构','节奏与动作'] };
+          return {
+            status: 'staged',
+            mode: 'reference_video',
+            referenceUrl: input.referenceUrl.trim(),
+            replaceMode: input.replaceMode || '换模特和服装',
+            replaceArea: input.replaceArea || '换全身',
+            effect: input.effect || '更自然',
+            quality: input.quality || '均衡',
+            scene: input.scene || '使用原场景',
+            model: input.model || 'Seedance',
+            resolution: input.resolution || '720p',
+            duration: input.duration || '10 秒'
+          };
         }
       });
       register({
