@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "direction": "editorial atelier",
+  "platform": "web",
+  "surface": "dual-device step-by-step fashion video workspace",
+  "palette": {
+    "paper": "#f2eee7",
+    "cream": "#fbf9f5",
+    "ink": "#1b1c1a",
+    "accent": "#b83b34"
+  },
+  "responsive": ["desktop workspace", "single-column mobile workflow"],
+  "blackBox": true
+}
