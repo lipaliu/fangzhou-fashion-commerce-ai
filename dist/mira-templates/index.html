@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f8f7fb" />
+    <title>mira · 爆款模板</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="#discover" aria-label="mira 首页"
+        >mira<span>✳</span></a
+      >
+      <span class="nav-caption">你的创作空间</span>
+      <nav aria-label="主导航">
+        <a href="#discover" class="nav-item active" id="nav-discover"
+          ><span>✧</span>爆款模板<small>NEW</small></a
+        >
+        <a href="../index.html" class="nav-item"><span>▤</span>制作流程</a>
+        <a href="#saved" class="nav-item" id="nav-saved"
+          ><span>♡</span>我的收藏</a
+        >
+        <a href="#drafts" class="nav-item" id="nav-drafts"
+          ><span>◷</span>制作草稿</a
+        >
+      </nav>
+      <div class="sidebar-note">
+        <span class="small-star">✳</span
+        ><strong>让灵感，成为你的作品。</strong>
+        <p>选一个喜欢的玩法，<br />换上你的人物与穿搭。</p>
+      </div>
+      <div class="account">
+        <span class="avatar">L</span>
+        <div><strong>Lipa 工作空间</strong><small>交互预览</small></div>
+        <span>⌄</span>
+      </div>
+    </aside>
+    <div class="app">
+      <header class="topbar">
+        <div id="breadcrumb">创作空间 <span>/</span> 爆款模板</div>
+        <div class="preview-label"><i></i> 产品预览 · 不消耗额度</div>
+      </header>
+      <main id="discover-page" class="page">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">MIRA PLAYBOOK</div>
+            <h1>好玩法，换你来演。</h1>
+            <p>看到喜欢的效果，换上自己的衣服、人物和场景。</p>
+          </div>
+          <button class="secondary" id="how-button">
+            玩法怎么用 <span>↗</span>
+          </button>
+        </div>
+        <div class="tabs" aria-label="模板栏目">
+          <button class="active" data-tab="daily">
+            每日热榜<span>精选</span></button
+          ><button data-tab="all">全部模板</button
+          ><button data-tab="saved">
+            我的收藏 <span id="saved-count">0</span>
+          </button>
+        </div>
+        <div class="filterbar">
+          <div class="filter-chips" aria-label="平台筛选">
+            <button class="active" data-platform="all">全部平台</button
+            ><button data-platform="douyin">抖音</button
+            ><button data-platform="tiktok">TikTok</button
+            ><button data-platform="instagram">Instagram</button>
+          </div>
+          <label class="search"
+            ><span>⌕</span
+            ><input
+              id="search"
+              type="search"
+              placeholder="搜索你想要的玩法"
+              aria-label="搜索模板"
+          /></label>
+        </div>
+        <div class="section-caption">
+          <span id="list-caption">本期提案 · 以小椰爆爆的悬浮搭配视频为例</span
+          ><span>热度数据待接入，当前不代表实时排名</span>
+        </div>
+        <div id="template-grid" class="template-grid"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <span>✧</span>
+          <h2>这里还没有模板</h2>
+          <p id="empty-copy">换个关键词试试。</p>
+          <button class="secondary" id="reset-filters">查看全部模板</button>
+        </div>
+        <section class="workflow-strip">
+          <div>
+            <span>01</span><strong>看效果，选玩法</strong>
+            <p>看完整视频，选中一个玩法</p>
+          </div>
+          <i>→</i>
+          <div>
+            <span>02</span><strong>换成你的素材</strong>
+            <p>衣服、人物、场地都由你决定</p>
+          </div>
+          <i>→</i>
+          <div>
+            <span>03</span><strong>生成你的同款</strong>
+            <p>保留玩法，拍出自己的版本</p>
+          </div>
+        </section>
+      </main>
+      <main id="create-page" class="page" hidden>
+        <div class="create-heading">
+          <button class="text-button" id="back-to-templates">← 返回模板</button
+          ><span>做同款 <i>/</i> <b id="create-name">悬浮搭配</b></span>
+        </div>
+        <div class="creator-layout">
+          <aside class="reference-panel">
+            <div class="reference-video" id="reference-video"></div>
+            <div class="reference-title">
+              <div>
+                <small>当前玩法</small>
+                <h2 id="reference-name">悬浮搭配</h2>
+              </div>
+              <button
+                class="icon-button"
+                id="reopen-preview"
+                aria-label="放大效果预览"
+              >
+                ↗
+              </button>
+            </div>
+            <div class="phase-summary">
+              <div>
+                <span>01</span>
+                <p>
+                  <strong>悬浮上身</strong><small>单品出现、展示、落位</small>
+                </p>
+              </div>
+              <div>
+                <span>02</span>
+                <p>
+                  <strong>穿搭快切</strong><small>景别变化，展示完整搭配</small>
+                </p>
+              </div>
+            </div>
+            <p class="reference-note">
+              保留这套玩法，场景与动作可以按你的想法改变。
+            </p>
+            <a
+              id="create-source"
+              class="source-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              >查看原作者视频 ↗</a
+            >
+          </aside>
+          <form id="create-form" novalidate>
+            <section class="form-section">
+              <div class="form-heading">
+                <span class="step-number">1</span>
+                <div>
+                  <h2>换衣服</h2>
+                  <p>上传整套穿搭，左右、上下拼图都可以。</p>
+                </div>
+                <span class="required">必填</span>
+              </div>
+              <div class="upload-grid single">
+                <label class="upload-card" id="outfit-card"
+                  ><input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    data-slot="outfit"
+                    aria-label="上传衣服参考图" />
+                  <div class="upload-placeholder">
+                    <span class="upload-symbol">＋</span
+                    ><strong>上传穿搭参考图</strong
+                    ><small>JPG、PNG、WebP · 最大 20 MB</small>
+                  </div>
+                  <div class="asset-preview" hidden></div
+                ></label>
+              </div>
+              <div class="under-upload">
+                <span>以独立展示的鞋包，优先确定本次搭配。</span
+                ><button type="button" class="text-button" data-sample="outfit">
+                  试用示例穿搭 ↗
+                </button>
+              </div>
+              <div class="extra-buttons">
+                <button type="button" data-extra="bag">＋ 包包</button
+                ><button type="button" data-extra="shoes">＋ 鞋子</button
+                ><button type="button" data-extra="accessory">＋ 配饰</button>
+              </div>
+              <div id="outfit-extras" class="extra-slots"></div>
+            </section>
+            <section class="form-section">
+              <div class="form-heading">
+                <span class="step-number">2</span>
+                <div>
+                  <h2>换脸</h2>
+                  <p>人物身份与发型默认来自这张图。</p>
+                </div>
+                <span class="required">必填</span>
+              </div>
+              <div class="upload-grid single">
+                <label class="upload-card compact" id="person-card"
+                  ><input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    data-slot="person"
+                    aria-label="上传人物参考图" />
+                  <div class="upload-placeholder">
+                    <span class="upload-symbol">＋</span
+                    ><strong>上传人物参考图</strong
+                    ><small>清晰人像，尽量避免遮挡</small>
+                  </div>
+                  <div class="asset-preview" hidden></div
+                ></label>
+              </div>
+              <div class="under-upload">
+                <button type="button" class="text-button" data-extra="hair">
+                  ＋ 单独指定发型</button
+                ><button type="button" class="text-button" data-sample="person">
+                  试用示例人物 ↗
+                </button>
+              </div>
+              <div id="person-extras" class="extra-slots"></div>
+            </section>
+            <section class="form-section">
+              <div class="form-heading">
+                <span class="step-number">3</span>
+                <div>
+                  <h2>换场地 <small>选填</small></h2>
+                  <p>沿用模板，也可以拍到你想去的地方。</p>
+                </div>
+              </div>
+              <div class="segmented" aria-label="场地来源">
+                <button type="button" class="active" data-scene="default">
+                  模板场景</button
+                ><button type="button" data-scene="text">描述场地</button
+                ><button type="button" data-scene="image">上传场景</button>
+              </div>
+              <div id="scene-default" class="scene-default">
+                <div class="studio-icon">◻</div>
+                <div>
+                  <strong>柔光浅色摄影棚</strong>
+                  <p>干净背景，让衣服成为主角</p>
+                </div>
+                <span>✓</span>
+              </div>
+              <div id="scene-text" hidden>
+                <label class="field-label" for="scene-description"
+                  >想在哪里拍？</label
+                ><textarea
+                  id="scene-description"
+                  rows="2"
+                  placeholder="例如：午后的巴黎街角，浅色石墙，人行道，自然日光"
+                ></textarea>
+              </div>
+              <label id="scene-image" class="upload-card compact" hidden
+                ><input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  data-slot="scene"
+                  aria-label="上传场景参考图" />
+                <div class="upload-placeholder">
+                  <span class="upload-symbol">＋</span
+                  ><strong>上传场景参考图</strong>
+                </div>
+                <div class="asset-preview" hidden></div
+              ></label>
+            </section>
+            <section class="form-section optional-section">
+              <details id="optional-settings">
+                <summary>
+                  <div>
+                    <span>✧</span><strong>可选调整</strong
+                    ><small>加一点你的想法</small>
+                  </div>
+                  <span class="chevron">⌄</span>
+                </summary>
+                <div class="optional-content">
+                  <label class="field-label" for="inspiration"
+                    >作者灵感 <small>选填</small></label
+                  ><textarea
+                    id="inspiration"
+                    rows="3"
+                    maxlength="1000"
+                    placeholder="例如：前半段边走边完成悬浮上身，后半段多展示包包，动作松弛一点。"
+                  ></textarea
+                  ><label class="field-label">视觉质感</label>
+                  <div class="style-options" id="style-options"></div>
+                  <p class="field-help">
+                    只改变画面质感，保持你的衣服颜色与人物身份。
+                  </p>
+                  <label class="field-label">人物状态</label>
+                  <div class="segmented" id="action-options">
+                    <button type="button" class="active" data-action="跟随模板">
+                      跟随模板</button
+                    ><button type="button" data-action="自然行走">
+                      自然行走</button
+                    ><button type="button" data-action="原地转身">
+                      原地转身
+                    </button>
+                  </div>
+                </div>
+              </details>
+            </section>
+            <section class="output-settings">
+              <div>
+                <label for="duration">视频时长</label
+                ><select id="duration">
+                  <option value="8">8 秒</option>
+                  <option value="10" selected>10 秒</option>
+                  <option value="12">12 秒</option>
+                  <option value="15">15 秒</option>
+                </select>
+              </div>
+              <div>
+                <label for="ratio">画面比例</label
+                ><select id="ratio">
+                  <option>9:16</option>
+                  <option>16:9</option>
+                  <option>1:1</option>
+                </select>
+              </div>
+              <div>
+                <label for="quality">清晰度</label
+                ><select id="quality">
+                  <option>720p</option>
+                  <option selected>1080p</option>
+                </select>
+              </div>
+            </section>
+            <div id="form-error" class="form-error" role="alert" hidden></div>
+            <div class="generate-bar">
+              <div>
+                <strong id="output-summary">10 秒 · 9:16 · 1080p</strong
+                ><small>预览模式：整理制作方案，不提交视频生成</small>
+              </div>
+              <button type="submit" class="primary">✧ 生成</button>
+            </div>
+          </form>
+        </div>
+      </main>
+      <main id="drafts-page" class="page" hidden>
+        <div class="page-heading">
+          <div class="eyebrow">YOUR CREATIONS</div>
+          <h1>制作草稿</h1>
+          <p>本浏览器保存的制作方案，随时继续调整。</p>
+        </div>
+        <div id="drafts-list"></div>
+      </main>
+    </div>
+    <dialog id="preview-dialog">
+      <button class="close-button" data-close aria-label="关闭效果预览">
+        ×
+      </button>
+      <div class="preview-layout">
+        <div id="modal-media" class="modal-media"></div>
+        <div class="modal-copy">
+          <span class="pill">玩法预览</span>
+          <h2 id="modal-title">悬浮搭配</h2>
+          <p>
+            让单品悬浮出现，穿到身上。<br />再用一组利落镜头，展示完整造型。
+          </p>
+          <div class="phase-cards">
+            <div>
+              <img src="assets/phase-one.jpg" alt="前段单品悬浮上身" /><span
+                ><small>前半段</small><strong>悬浮上身</strong></span
+              >
+            </div>
+            <div>
+              <img src="assets/phase-two.jpg" alt="后段穿搭与拍摄花絮" /><span
+                ><small>后半段</small><strong>穿搭与花絮快切</strong></span
+              >
+            </div>
+          </div>
+          <p class="modal-note">
+            这是一个玩法、一条完整视频。<br />人物、穿搭、场景与具体动作都可替换。
+          </p>
+          <a
+            class="source-link"
+            id="modal-source"
+            target="_blank"
+            rel="noopener noreferrer"
+            >参考：小椰爆爆🥥 · 抖音 ↗</a
+          ><button id="make-same" class="primary wide">
+            做同款 <span>→</span></button
+          ><small class="demo-note"
+            >交互预览 · 已写好模板规则，用于开发评审，生成服务待接入</small
+          >
+        </div>
+      </div>
+    </dialog>
+    <dialog id="result-dialog">
+      <button class="close-button" data-close aria-label="关闭制作方案">
+        ×
+      </button>
+      <div class="result-content">
+        <div class="success-icon">✓</div>
+        <span class="eyebrow">CREATION BRIEF</span>
+        <h2>这次的制作方案，准备好了。</h2>
+        <p>已整理你的素材与选择。当前为预览，尚未生成新视频。</p>
+        <div id="result-summary" class="result-summary"></div>
+        <div id="result-phases" class="result-phases"></div>
+        <details>
+          <summary>查看本次制作要求</summary>
+          <pre id="result-prompt"></pre>
+        </details>
+        <div class="result-buttons">
+          <button class="secondary" id="download-brief">下载制作方案</button
+          ><button class="primary" id="continue-edit">继续调整 →</button>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="how-dialog">
+      <button class="close-button" data-close aria-label="关闭使用说明">
+        ×
+      </button>
+      <div class="result-content">
+        <span class="eyebrow">MAKE IT YOURS</span>
+        <h2>喜欢这个效果？换你来拍。</h2>
+        <p>1. 预览完整效果，点击「做同款」。</p>
+        <p>2. 换上自己的衣服、人物和场景。</p>
+        <p>3. 可选填灵感、选择质感，再生成。</p>
+        <p class="demo-note">
+          这份预览演示操作和制作方案。热榜采集、图片理解与真实视频生成尚未接入。
+        </p>
+      </div>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

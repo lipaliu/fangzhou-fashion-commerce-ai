@@ -1,0 +1,8 @@
+.DS_Store
+dist/mira-templates/local-media/*
+!dist/mira-templates/local-media/.gitkeep
+node_modules/
+.env
+.env.*
+work/
+test-artifacts/

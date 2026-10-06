@@ -1,0 +1,85 @@
+{
+  "id": "floating-outfit",
+  "version": "0.1.0-proposal",
+  "title": "悬浮搭配",
+  "status": "proposal",
+  "render_validation": "not_tested",
+  "output_count": 1,
+  "reference": {
+    "platform": "douyin",
+    "creator": "小椰爆爆🥥",
+    "url": "https://www.douyin.com/video/7692089168440581489",
+    "comparison_url": "https://www.douyin.com/video/7684963490964895921",
+    "observed_duration_seconds": 22.754,
+    "unique_cycle_seconds": 5.683,
+    "repetition_count": 4,
+    "role": "结构研究与提案参考，不是作者原始提示词或我们的生成结果"
+  },
+  "fixed_mechanics": [
+    "目标单品悬浮出现、可辨认展示并分组上身",
+    "上身完成后通过多角度穿搭和可选花絮短镜头组接展示",
+    "两个内部阶段组成一条完整视频"
+  ],
+  "observed_structure": [
+    {
+      "from": 0,
+      "to": 1.35,
+      "function": "悬浮上身",
+      "camera": "相对稳定全身构图"
+    },
+    {
+      "from": 1.35,
+      "to": 5.683,
+      "function": "完成造型后的快切展示",
+      "camera": "近景、全身、俯拍、侧后方等短镜头"
+    }
+  ],
+  "required_inputs": ["outfit", "person"],
+  "optional_inputs": [
+    "scene",
+    "hair",
+    "bag",
+    "shoes",
+    "accessory",
+    "author_inspiration",
+    "visual_style"
+  ],
+  "replaceable": [
+    "person",
+    "hair",
+    "outfit",
+    "accessories",
+    "scene",
+    "action",
+    "camera_details",
+    "visual_style"
+  ],
+  "defaults": {
+    "scene": "浅色柔光摄影棚",
+    "opening_outfit": "完整覆盖身体的简洁基础便装",
+    "target_duration_seconds": 10,
+    "aspect_ratio": "9:16",
+    "style": "自然清透",
+    "supporting_cast": [],
+    "extra_props": []
+  },
+  "planning": {
+    "mode": "independent_single_generation",
+    "identity_scene_outfit_lock": true,
+    "shot_variation": true,
+    "normal_motion_speed": true,
+    "repeat_to_fill": false,
+    "phase_timings": "由单品复杂度、动作与总时长决定，不强制按原片比例缩放",
+    "model_tier": "pro",
+    "allow_lite": false,
+    "allow_silent_downgrade": false
+  },
+  "publish_gate": [
+    "reference_reviewed",
+    "recipe_compiled",
+    "multiple_outfits_render_tested",
+    "identity_outfit_scene_consistency_checked",
+    "single_output_duration_checked",
+    "preview_rights_resolved"
+  ]
+}
