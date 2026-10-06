@@ -22,6 +22,11 @@ test("one complete output with contiguous internal phases and exact duration", (
     const r = buildRequest(s);
     assert.equal(r.outputCount, 1);
     assert.equal(r.internalStructure[0].from, 0);
+    assert.equal(
+      r.internalStructure[0].to,
+      1.5,
+      "longer output must not stretch the short contrast opening",
+    );
     assert.equal(r.internalStructure[0].to, r.internalStructure[1].from);
     assert.equal(r.internalStructure[1].to, d);
   }

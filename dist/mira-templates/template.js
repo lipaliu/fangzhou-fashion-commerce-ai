@@ -1,7 +1,7 @@
 // Preview-only recipe. Production publishes recipes only after generation validation.
 export const template = {
   id: "floating-outfit",
-  version: "0.1.0-proposal",
+  version: "0.2.0-proposal",
   title: "悬浮搭配",
   outputCount: 1,
   publicationStatus: "proposal",
@@ -15,7 +15,8 @@ export const template = {
   uniqueCycleDuration: 5.683,
   defaults: {
     scene: "柔光浅色摄影棚，统一背景与地面，柔和环境光",
-    opening: "简洁、不透明、完整覆盖身体的基础便装；上身后被目标穿搭替换",
+    opening:
+      "简洁宽松、不透明的睡衣或家居服，仅用于开场反差，具体款式无需复刻；上身后被目标穿搭替换",
     action: "跟随模板",
     style: "跟随模板",
     duration: 10,
@@ -24,7 +25,7 @@ export const template = {
   },
   mechanics: [
     "目标单品悬浮出现、展示并上身",
-    "变装完成后以短镜头组接展示同一套完整穿搭",
+    "完成造型后像模特进入拍摄状态，以pose、补妆和摄影花絮展示整套搭配",
   ],
   fixed: [
     "一个玩法最终输出一条完整视频",
@@ -98,7 +99,7 @@ export function buildRequest(s) {
   if (s.sceneMode === "image") add("scene");
   const ref = (role) => refs.find((a) => a.role === role)?.ref;
   const duration = Number(s.duration),
-    transitionEnd = Math.round(duration * 0.3 * 10) / 10;
+    transitionEnd = 1.5;
   const scene =
     s.sceneMode === "text"
       ? s.sceneText.trim()
@@ -123,9 +124,10 @@ export function buildRequest(s) {
       ),
     `场景：${scene}。匹配环境的光向、色温、接触阴影与反光，保持人脸身份及服装固有色；机位变化时呈现自然透视，不将场景图当固定平面。`,
     `画面质感：${styles[s.style] || styles["跟随模板"]}。`,
-    `开场状态：${template.defaults.opening}。`,
+    `先确定完成后的模特造型：服装、鞋包、配饰、发型和整体妆容形成同一套完整目标造型；眼镜等单品按实际目标穿搭提取。这一终态是上身效果和所有后续镜头的统一依据。`,
+    `开场状态：${template.defaults.opening}。开场已佩戴的目标配饰可保留，不再重复出现或上身。`,
     `第一部分（0–${transitionEnd} 秒）：${s.action === "自然行走" ? "人物自然向前走，相机平稳后退配合；" : s.action === "原地转身" ? "人物在原地自然转身，相机以小幅侧移配合；" : "人物放松站立并自然抬手，相机保持清晰全身构图；"}目标单品悬浮出现并依穿戴关系分组上身。过程保持对应单品款式、结构和颜色；落位后不留重复副本。`,
-    `第二部分（${transitionEnd}–${duration} 秒）：完成上身后，交替使用完整造型、不同角度与穿搭细节短镜头；动作以本次实际单品为依据，剪切利落。场景、身份、发型和完成后的穿搭保持一致。`,
+    `第二部分（${transitionEnd}–${duration} 秒）：完成上身后，人物像进入正式拍摄的模特，自然切换站姿、重心、侧身和回头等pose，展示完整造型与单品。穿插化妆师局部入画补妆、摄影师相机前景或拍摄间隙调整姿态等片场瞬间，默认至少安排一个明确花絮镜头。以全身、半身、俯拍或侧后方短镜头利落组接，保持拍摄现场感。辅助人员只服务拍摄，不替换主人物。身份、服装、配饰、发型和场景保持一致。可以在摄影棚或外景拍摄，动作随本次场地与单品适配。`,
     `两部分组成同一条完整视频，不输出两条视频；镜头内部动作与空间连续，镜头之间允许明确剪切。按照目标总时长组织正常速率动作，不用重复原片、慢动作或静帧补时长。`,
   ];
   return {
@@ -152,14 +154,15 @@ export function buildRequest(s) {
       {
         from: 0,
         to: transitionEnd,
-        title: "悬浮上身",
-        description: "根据本次单品与动作，设计出现、展示和落位。",
+        title: "睡衣反差 → 完整造型",
+        description: "短暂睡衣开场，目标搭配悬浮上身；睡衣款式不是展示重点。",
       },
       {
         from: transitionEnd,
         to: duration,
-        title: "完整穿搭展示",
-        description: "以多角度与细节短镜头组成后段，合成同一条视频。",
+        title: "模特展示与片场花絮",
+        description:
+          "保持完成后的造型，以pose、补妆、摄影花絮和细节快切完成同一条视频。",
       },
     ],
     notes: [

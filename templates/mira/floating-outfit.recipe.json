@@ -1,6 +1,6 @@
 {
   "id": "floating-outfit",
-  "version": "0.1.0-proposal",
+  "version": "0.2.0-proposal",
   "title": "悬浮搭配",
   "status": "proposal",
   "render_validation": "not_tested",
@@ -17,7 +17,8 @@
   },
   "fixed_mechanics": [
     "目标单品悬浮出现、可辨认展示并分组上身",
-    "上身完成后通过多角度穿搭和可选花絮短镜头组接展示",
+    "先锁定完整模特造型，再设计短暂睡衣反差开场",
+    "上身完成后以pose、补妆和摄影花絮展示整套搭配，默认至少一个片场瞬间",
     "两个内部阶段组成一条完整视频"
   ],
   "observed_structure": [
@@ -56,12 +57,12 @@
   ],
   "defaults": {
     "scene": "浅色柔光摄影棚",
-    "opening_outfit": "完整覆盖身体的简洁基础便装",
+    "opening_outfit": "简洁宽松、不透明的睡衣或家居服，款式不重要，不要求用户提供",
     "target_duration_seconds": 10,
     "aspect_ratio": "9:16",
     "style": "自然清透",
-    "supporting_cast": [],
-    "extra_props": []
+    "supporting_cast": ["按选定花絮镜头安排局部入画的化妆师或摄影师"],
+    "extra_props": ["按花絮镜头需要安排化妆工具或相机，不改变目标穿搭"]
   },
   "planning": {
     "mode": "independent_single_generation",
@@ -69,7 +70,8 @@
     "shot_variation": true,
     "normal_motion_speed": true,
     "repeat_to_fill": false,
-    "phase_timings": "由单品复杂度、动作与总时长决定，不强制按原片比例缩放",
+    "phase_timings": "开场变装约1–2秒，预览默认1.5秒；其余时长用于模特展示与片场花絮，不按总时长的30%拉长开场",
+    "interpretation": "2026-10-07按Lipa理解校准；先确定终态是本模板规划策略，不声称知道原作者的实际制作顺序",
     "model_tier": "pro",
     "allow_lite": false,
     "allow_silent_downgrade": false

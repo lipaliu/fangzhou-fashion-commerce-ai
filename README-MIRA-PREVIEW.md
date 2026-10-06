@@ -14,6 +14,10 @@ python3 -m http.server 8873 --bind 127.0.0.1 --directory dist
 
 打开 http://127.0.0.1:8873/mira-templates/ 。这是本地预览地址，不是公网网址。
 
+2026-10-07 更新：左侧「玩法候选库」进入 `http://127.0.0.1:8873/mira-templates/admin.html`，体验管理员先选中候选、填写拆解指导，再准备模型任务的流程。4条公开来源中有3条仅为待核验搜索线索，未声称是当日爆款。普通用户/管理员/超级管理员切换仅用于演示；正式鉴权、自动采集和模型调用待后端接入。
+
+「悬浮搭配」已校准为先锁定最终模特造型、约1–2秒睡衣反差开场，然后进入pose、补妆与摄影花絮；睡衣不是必填素材，一次仍输出一条视频。
+
 1. 点击「悬浮搭配」卡片看效果，再点「做同款」。
 2. 上传图片或点击「试用示例穿搭」「从人像库选择」。
 3. 换场地，展开可选调整，输入灵感、选择质感。
@@ -27,6 +31,7 @@ python3 -m http.server 8873 --bind 127.0.0.1 --directory dist
 - [API及数据契约](docs/mira/API-CONTRACT.md)
 - [大模型系统提示词](templates/mira/planner-system.md)
 - [悬浮搭配配方](templates/mira/floating-outfit.recipe.json)
+- [管理端拆解模型提示词](templates/mira/analysis-system.md)
 - [页面代码](dist/mira-templates/index.html)
 - [制作请求编译逻辑](dist/mira-templates/template.js)
 - [验收记录](docs/mira/VALIDATION.md)

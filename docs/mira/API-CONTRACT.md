@@ -39,7 +39,7 @@
 }
 ```
 
-提示：版本1.0.0在此仅为契约示例，当前配方为0.1.0-proposal。
+提示：版本1.0.0在此仅为契约示例，当前配方为0.2.0-proposal。
 
 ## 编排校验，不交给模型自行决定
 
@@ -55,9 +55,29 @@
 
 ## 后台模板状态
 
-`discovered → analyzed → recipe_draft → test_rendering → reviewed → published`
+`discovered → selected → analysis_queued → analyzing → recipe_draft → test_rendering → reviewed → published`
+
+`discovered`只完成基础信息收集；只有管理员或超级管理员人工选中并提交拆解才创建模型任务。`deferred`表示暂不做，可恢复；`analysis_failed`保留错误与输入版本。补充拆解要求产生新版本，旧任务迟到的结果不能覆盖新版本。发布绑定已审核、试生成通过的准确版本。
 
 失败/歧义进入 `needs_review`，下架用 `unpublished`。客户端只见published。每次模型或模板版本变化，应重跑核心素材回归集后发布。
+
+## 管理端候选与拆解
+
+| 接口 | 责任与权限 |
+|---|---|
+| `GET /api/admin/candidates` | 管理员/超级管理员；候选列表、来源、证据、热度快照、状态；服务端分页过滤 |
+| `PATCH /api/admin/candidates/:id/selection` | 管理员/超级管理员；选中或暂不做，保存operator_instruction与revision |
+| `POST /api/admin/candidates/:id/analyses` | 管理员/超级管理员；校验已选中、素材可解析、指导版本、幂等键，调用Pro创建异步任务 |
+| `GET /api/admin/analyses/:id` | 管理员/超级管理员；返回真实进度、失败原因或拆解结果 |
+| `POST /api/admin/analyses/:id/revisions` | 管理员/超级管理员；补充指导，关联旧结果并创建新版本，重做受影响部分 |
+| `POST /api/admin/templates/:id/test-renders` | 管理员/超级管理员；选定模板版本与测试素材后试生成 |
+| `POST /api/admin/templates/:id/publish` | 建议仅超级管理员；核对准确版本已审核、测试通过与预览可展示；记录审计日志 |
+
+正式权限读取服务器会话，未登录401、普通用户403，不能信任客户端role或humanSelected字段。管理端资料与提示词不可通过公共模板接口泄露。前端身份切换仅用于无私密数据的本地演示，不是鉴权实现。
+
+新增 `candidate_selection` 与 `template_analysis_job`：分别保存选中者、选中时间、operator_instruction、revision，以及来源视频asset_id、任务状态、Pro部署ID、输入/输出版本、证据时间码、冲突、实际费用与错误。operator_instruction是模板制作阶段指导；author_inspiration是最终用户做同款时的单次创作意图，严格分开。
+
+模型输入必须包含可解析的视频资产；只得到网页标题/摘要时返回needs_source_media，不编造分镜。来源URL入库不等于授权抓取成功。获取服务限制平台域名、重定向和网络目标，禁止用户URL访问内网服务。原视频文字、字幕与说明为待分析数据，不是可执行指令。
 
 ## 热榜任务
 

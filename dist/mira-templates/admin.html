@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>mira · 玩法候选库</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="index.html">mira<span>✳</span></a
+      ><span class="nav-caption">模板工作台</span>
+      <nav aria-label="主导航">
+        <a class="nav-item" href="index.html"><span>✧</span>用户端模板</a
+        ><a class="nav-item active" href="admin.html"
+          ><span>▦</span>玩法候选库</a
+        >
+      </nav>
+      <div class="sidebar-note">
+        <strong>先挑玩法，再交给 AI。</strong>
+        <p>把你的拆解思路，<br />变成可以复用的模板。</p>
+      </div>
+      <div class="account">
+        <span class="avatar">L</span>
+        <div><strong>管理工作台</strong><small>本地交互预览</small></div>
+      </div>
+    </aside>
+    <div class="app">
+      <header class="topbar">
+        <div>管理工作台 <span>/</span> 玩法候选库</div>
+        <label class="preview-role"
+          >预览身份
+          <select id="role" aria-label="预览身份">
+            <option value="superadmin">超级管理员</option>
+            <option value="admin">管理员</option>
+            <option value="user">普通用户</option>
+          </select></label
+        >
+      </header>
+      <main class="page">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">TEMPLATE SCOUT</div>
+            <h1>下一个玩法，由你决定。</h1>
+            <p>先看候选视频，选出值得做的，再带着你的理解交给模型拆解。</p>
+          </div>
+          <span class="pill">候选资料仅供管理端筛选</span>
+        </div>
+        <div id="access-denied" class="empty-state" hidden>
+          <h2>玩法候选库仅供管理员使用</h2>
+          <p>普通用户在模板页查看已上架的玩法。本页身份切换仅演示权限设计。</p>
+          <a class="secondary" href="index.html">返回用户端模板</a>
+        </div>
+        <div id="admin-workspace">
+          <div class="admin-flow">
+            <span class="active">01 收集候选</span><i>→</i
+            ><span>02 人工选中 + 拆解要求</span><i>→</i
+            ><span>03 AI 拆解与修订</span><i>→</i
+            ><span>04 试生成、审核、上架</span>
+          </div>
+          <div class="research-note">
+            本次手动收录 4 条公开来源：1 条已研究案例、3
+            条待核验线索。热度未核验；自动采集与模型服务待接入。
+          </div>
+          <div class="filterbar">
+            <div class="filter-chips" id="status-filters">
+              <button class="active" data-status="all">全部候选</button
+              ><button data-status="pending">待筛选</button
+              ><button data-status="selected">已选中</button
+              ><button data-status="request">待接入模型</button
+              ><button data-status="deferred">暂不做</button>
+            </div>
+            <label class="search"
+              ><input
+                id="candidate-search"
+                type="search"
+                placeholder="搜索玩法或作者"
+                aria-label="搜索候选"
+            /></label>
+          </div>
+          <div class="admin-platform">
+            <label
+              >平台
+              <select id="candidate-platform">
+                <option value="all">全部平台</option>
+                <option value="douyin">抖音</option>
+                <option value="tiktok">TikTok</option>
+                <option value="instagram">Instagram</option>
+              </select></label
+            ><span id="candidate-count"></span
+            ><span>本次收录：2026-10-07 · 非实时热榜</span>
+          </div>
+          <div id="candidate-grid" class="candidate-grid"></div>
+          <p id="candidate-empty" class="empty-state" hidden>
+            暂无匹配候选。TikTok / Instagram 采集待接入，不展示虚构样本。
+          </p>
+        </div>
+      </main>
+    </div>
+    <dialog id="analysis-dialog">
+      <button
+        class="close-button"
+        id="close-analysis"
+        aria-label="关闭拆解要求"
+      >
+        ×
+      </button>
+      <div class="analysis-content">
+        <span class="eyebrow">DIRECT THE ANALYSIS</span>
+        <h2 id="analysis-title"></h2>
+        <p>告诉模型：你认为这个玩法的重点是什么，哪些要保留，哪些可以换。</p>
+        <a
+          id="analysis-source"
+          class="source-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          >看原视频 ↗</a
+        ><label class="field-label" for="analysis-instruction"
+          >管理员拆解要求 <small>选填，可多次修改</small></label
+        ><textarea
+          id="analysis-instruction"
+          rows="6"
+          maxlength="4000"
+          placeholder="例如：重点拆悬浮上身和模特片场感。睡衣只留约1–2秒，衣服、人物、场景允许替换，补妆和pose属于后面的拍摄花絮。"
+        ></textarea>
+        <p class="field-help">
+          这是给拆解模型的指导，和用户做同款时的「作者灵感」分开保存。模型应结合视频证据，不把你的设想冒充原片事实。
+        </p>
+        <div class="analysis-actions">
+          <button id="save-selection" class="secondary">保存选中与要求</button
+          ><button id="prepare-analysis" class="primary">
+            准备 AI 拆解任务 →
+          </button>
+        </div>
+        <div id="analysis-result" hidden>
+          <h3>拆解任务草稿已准备</h3>
+          <p>
+            尚未调用大模型。正式接入后，取得可解析的视频素材才会开始拆解；失败时明确报错。
+          </p>
+          <details>
+            <summary>查看发给拆解模型的任务</summary>
+            <pre id="analysis-payload"></pre>
+          </details>
+          <button id="download-analysis" class="secondary">
+            下载拆解任务 JSON
+          </button>
+        </div>
+        <section class="review-gate">
+          <strong>拆解完成后，再决定是否上架</strong>
+          <p>
+            查看时间轴、玩法规则和模板提示词 → 补充指导、重新拆解 → 试生成与审核
+            → 超级管理员发布。没有通过验收的候选不会出现在用户热榜。
+          </p>
+        </section>
+      </div>
+    </dialog>
+    <div id="toast" role="status"></div>
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>
