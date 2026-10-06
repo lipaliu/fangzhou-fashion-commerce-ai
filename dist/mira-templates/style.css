@@ -1857,3 +1857,197 @@ dialog::backdrop {
     font-size: 10px;
   }
 }
+.portrait-library-entry {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid #dfd0e9;
+  border-radius: 11px;
+  background: #f3edf8;
+  text-align: left;
+  margin-bottom: 13px;
+  color: #745383;
+}
+.portrait-library-entry:hover {
+  background: #ede3f4;
+}
+.portrait-library-icon {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: white;
+  color: #a084b1;
+  font-size: 25px;
+}
+.portrait-library-entry strong {
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+}
+.portrait-library-entry small {
+  font-size: 10px;
+  color: #a089ae;
+  display: block;
+  margin-top: 6px;
+}
+.portrait-library-arrow {
+  margin-left: auto;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.portrait-library-content {
+  padding: 37px;
+}
+.portrait-library-content h2 {
+  font-size: 26px;
+  font-weight: 500;
+  margin: 10px 0;
+}
+.portrait-library-content > p {
+  font-size: 12px;
+  color: #94819f;
+  line-height: 1.8;
+}
+.portrait-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 25px 0 22px;
+}
+.portrait-add {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+.portrait-add input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.portrait-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  min-height: 230px;
+}
+.portrait-option {
+  position: relative;
+  border: 1px solid #e4dbe9;
+  background: white;
+  border-radius: 12px;
+  padding: 8px;
+  text-align: left;
+  align-self: start;
+}
+.portrait-option.selected {
+  border: 2px solid #9c7bb0;
+  background: #f5eff9;
+  padding: 7px;
+}
+.portrait-option img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: 50% 20%;
+  border-radius: 7px;
+}
+.portrait-option strong {
+  display: block;
+  font-size: 12px;
+  margin: 11px 3px 6px;
+  overflow-wrap: anywhere;
+}
+.portrait-option small {
+  font-size: 10px;
+  color: #ab99b6;
+  display: block;
+  margin: 0 3px 4px;
+}
+.portrait-check {
+  position: absolute;
+  top: 17px;
+  right: 17px;
+  width: 21px;
+  height: 21px;
+  background: #fff9;
+  border: 1px solid #dbc7e8;
+  border-radius: 50%;
+  font-size: 11px;
+  display: grid;
+  place-items: center;
+  color: white;
+}
+.portrait-option.selected .portrait-check {
+  background: #9270a5;
+}
+.portrait-library-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-top: 22px;
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.portrait-library-footer small {
+  font-size: 10px;
+  color: #a18eac;
+  line-height: 1.9;
+}
+@media (max-width: 700px) {
+  .portrait-library-content {
+    padding: 30px 22px;
+  }
+  .portrait-library-content h2 {
+    font-size: 23px;
+  }
+  .portrait-toolbar {
+    gap: 10px;
+  }
+  .portrait-toolbar .search {
+    min-width: 0;
+    flex: 1;
+  }
+  .portrait-toolbar .search input {
+    min-width: 0;
+  }
+  .portrait-add {
+    font-size: 10px;
+    padding: 8px;
+    white-space: nowrap;
+  }
+  .portrait-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .portrait-option img {
+    height: 150px;
+  }
+  .portrait-library-footer {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .portrait-library-footer .primary {
+    width: 100%;
+  }
+  .portrait-library-entry {
+    padding: 13px 10px;
+    gap: 10px;
+  }
+  .portrait-library-entry strong {
+    font-size: 12px;
+  }
+  .portrait-library-entry small {
+    font-size: 9px;
+  }
+  .portrait-library-arrow {
+    font-size: 10px;
+  }
+}

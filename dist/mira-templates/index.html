@@ -193,10 +193,21 @@
                 <span class="step-number">2</span>
                 <div>
                   <h2>换脸</h2>
-                  <p>人物身份与发型默认来自这张图。</p>
+                  <p>选择人像库中的人物，或上传新人像。</p>
                 </div>
                 <span class="required">必填</span>
               </div>
+              <button
+                type="button"
+                class="portrait-library-entry"
+                id="open-portrait-library"
+              >
+                <span class="portrait-library-icon">♙</span
+                ><span
+                  ><strong>从人像库选择</strong
+                  ><small>复用已有的人物身份与发型</small></span
+                ><span class="portrait-library-arrow">选择人物 →</span>
+              </button>
               <div class="upload-grid single">
                 <label class="upload-card compact" id="person-card"
                   ><input
@@ -206,7 +217,7 @@
                     aria-label="上传人物参考图" />
                   <div class="upload-placeholder">
                     <span class="upload-symbol">＋</span
-                    ><strong>上传人物参考图</strong
+                    ><strong>或上传新人像</strong
                     ><small>清晰人像，尽量避免遮挡</small>
                   </div>
                   <div class="asset-preview" hidden></div
@@ -215,9 +226,7 @@
               <div class="under-upload">
                 <button type="button" class="text-button" data-extra="hair">
                   ＋ 单独指定发型</button
-                ><button type="button" class="text-button" data-sample="person">
-                  试用示例人物 ↗
-                </button>
+                ><span>未指定独立发型时，使用所选人物的发型。</span>
               </div>
               <div id="person-extras" class="extra-slots"></div>
             </section>
@@ -406,6 +415,42 @@
         <div class="result-buttons">
           <button class="secondary" id="download-brief">下载制作方案</button
           ><button class="primary" id="continue-edit">继续调整 →</button>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="portrait-dialog">
+      <button class="close-button" data-close aria-label="关闭人像库">×</button>
+      <div class="portrait-library-content">
+        <span class="eyebrow">YOUR PEOPLE</span>
+        <h2>从人像库选择</h2>
+        <p>选中一个人物，用于这次悬浮搭配视频。</p>
+        <div class="portrait-toolbar">
+          <label class="search"
+            ><span>⌕</span
+            ><input
+              type="search"
+              id="portrait-search"
+              placeholder="搜索人物名称"
+              aria-label="搜索人物名称" /></label
+          ><label class="secondary portrait-add"
+            >＋ 添加人像<input
+              type="file"
+              id="portrait-file"
+              accept="image/jpeg,image/png,image/webp"
+              aria-label="添加人像到本地预览库"
+          /></label>
+        </div>
+        <div id="portrait-grid" class="portrait-grid"></div>
+        <p id="portrait-empty" class="field-help" hidden>
+          没有找到这个人物，换个名字试试。
+        </p>
+        <div class="portrait-library-footer">
+          <small
+            >本地预览库 · 新增人像仅在本次页面会话中保留<br />正式版本接入 Mira
+            现有的人像库</small
+          ><button class="primary" id="confirm-person" disabled>
+            使用这个人物 →
+          </button>
         </div>
       </div>
     </dialog>

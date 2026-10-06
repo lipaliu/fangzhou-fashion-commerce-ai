@@ -91,6 +91,7 @@ export function buildRequest(s) {
         ref: `@Image${refs.length + 1}`,
         fileName: a.name,
         origin: a.origin,
+        ...(a.libraryPersonId ? { libraryPersonId: a.libraryPersonId } : {}),
       });
   };
   ["person", "outfit", "hair", "bag", "shoes", "accessory"].forEach(add);

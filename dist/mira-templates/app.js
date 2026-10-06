@@ -215,7 +215,7 @@ function displayAsset(slot) {
   const preview = card.querySelector(".asset-preview");
   preview.hidden = !a;
   if (a) {
-    preview.innerHTML = `<img src="${escape(a.url)}" alt="${roleLabels[slot]}参考缩略图"><div><strong>${escape(a.name)}</strong><small>${a.origin === "sample" ? "示例素材" : "仅在本页使用，尚未上传"}</small><span>点击替换图片</span></div>`;
+    preview.innerHTML = `<img src="${escape(a.url)}" alt="${roleLabels[slot]}参考缩略图"><div><strong>${escape(a.name)}</strong><small>${a.origin === "sample" ? "示例素材" : a.origin === "library" ? "来自本地预览人像库 · 默认使用人物发型" : "仅在本页使用，尚未上传"}</small><span>${slot === "person" ? "点击上传替换，或从人像库重新选择" : "点击替换图片"}</span></div>`;
   }
 }
 async function upload(input) {
@@ -256,6 +256,96 @@ function bindInputs() {
   });
 }
 bindInputs();
+const portraits = [
+  {
+    id: "demo-person-01",
+    name: "示例人物 01",
+    url: "../assets/fashion-model.png",
+    tag: "示例人像",
+  },
+];
+let selectedPortraitId = null;
+function renderPortraits() {
+  const q = $("#portrait-search").value.trim().toLowerCase();
+  const visible = portraits.filter((p) => p.name.toLowerCase().includes(q));
+  $("#portrait-grid").innerHTML = visible
+    .map(
+      (p) =>
+        `<button type="button" class="portrait-option ${selectedPortraitId === p.id ? "selected" : ""}" data-portrait="${p.id}" aria-pressed="${selectedPortraitId === p.id}" aria-label="选择${escape(p.name)}"><img src="${escape(p.url)}" alt="${escape(p.name)}"><span class="portrait-check">${selectedPortraitId === p.id ? "✓" : ""}</span><strong>${escape(p.name)}</strong><small>${p.tag}</small></button>`,
+    )
+    .join("");
+  $("#portrait-empty").hidden = visible.length > 0;
+  $("#confirm-person").disabled = !portraits.some(
+    (p) => p.id === selectedPortraitId,
+  );
+  $$("[data-portrait]").forEach(
+    (b) =>
+      (b.onclick = () => {
+        selectedPortraitId = b.dataset.portrait;
+        renderPortraits();
+      }),
+  );
+}
+$("#open-portrait-library").onclick = () => {
+  selectedPortraitId = state.assets.person?.libraryPersonId || null;
+  $("#portrait-search").value = "";
+  renderPortraits();
+  $("#portrait-dialog").showModal();
+};
+$("#portrait-search").oninput = renderPortraits;
+$("#confirm-person").onclick = () => {
+  const person = portraits.find((p) => p.id === selectedPortraitId);
+  if (!person) return;
+  if (state.assets.person?.origin === "upload")
+    URL.revokeObjectURL(state.assets.person.url);
+  state.assets.person = {
+    name: person.name,
+    url: person.url,
+    origin: "library",
+    libraryPersonId: person.id,
+  };
+  displayAsset("person");
+  $("#form-error").hidden = true;
+  $("#portrait-dialog").close();
+  toast("已选择 " + person.name);
+};
+$("#portrait-file").onchange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (
+    !["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
+    file.size > 20 * 1024 * 1024
+  ) {
+    toast("请选择不超过 20 MB 的 JPG、PNG 或 WebP 图片。");
+    e.target.value = "";
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  try {
+    await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = url;
+    });
+  } catch {
+    URL.revokeObjectURL(url);
+    e.target.value = "";
+    toast("无法读取这张人像，请换一张。");
+    return;
+  }
+  const id = crypto.randomUUID();
+  portraits.push({
+    id,
+    name: file.name.replace(/\.[^.]+$/, ""),
+    url,
+    tag: "本次添加",
+  });
+  selectedPortraitId = id;
+  $("#portrait-search").value = "";
+  renderPortraits();
+  e.target.value = "";
+};
 $$("[data-sample]").forEach(
   (b) =>
     (b.onclick = () => {
