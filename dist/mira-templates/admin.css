@@ -63,7 +63,7 @@
   flex-direction: column;
 }
 .candidate-cover {
-  height: 150px;
+  height: 280px;
   background: linear-gradient(125deg, #e9e0ed, #f6f2f9);
   display: flex;
   align-items: center;
@@ -74,8 +74,8 @@
 .candidate-cover img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 35%;
+  object-fit: contain;
+  object-position: center;
 }
 .candidate-cover strong {
   font-size: 24px;

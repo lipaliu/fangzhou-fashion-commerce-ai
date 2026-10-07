@@ -46,6 +46,8 @@ python3 -m http.server 8873 --bind 127.0.0.1 --directory dist
 
 ## 素材来源
 
+2026-10-07补充候选预览：`camera-change.jpg`来自吉子范范作品7596268631147804406，`beat-change.jpg`来自北欧时刻官方旗舰店作品7511971418955992335，`look-card.jpg`来自周大仙作品7660202114127285555。均为在原网页可播放画面中截取的单帧，卡片保留对应原视频链接，用于本地方案评审，不代表完整拆解、热度认证或商用授权。
+
 `assets/floating-cover.jpg`、`outfit.jpg`、`phase-one.jpg`、`phase-two.jpg`为上述公开作品的少量分析截图，保留原有标记，仅用于本提案解释与评审；不宣称我们拥有原作品或其商用授权。原作者链接：https://www.douyin.com/video/7692089168440581489 。正式产品预览素材需用获准展示的来源或自己的模板测试成片。
 
 示例人物沿用本仓库已有 `dist/assets/fashion-model.png`，不作为新生成结果。新增内容不改变这些素材原有权利状态。
