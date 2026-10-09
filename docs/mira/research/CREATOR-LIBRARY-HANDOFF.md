@@ -1,5 +1,11 @@
 # 100 个账号参考库交接
 
+## 2026-10-09 页内播放更新
+
+账号库和玩法候选库点击封面后均在本页弹窗播放，关闭会销毁播放器并停止声音。可从播放器进入原管理指导弹窗；不会自动保存选择。两个页面共享 `source-player.js`/`.css`，按需创建一个播放器，不预加载100部视频。
+
+使用抖音官方嵌入播放器：https://partner.open-douyin.com/docs/resource/zh-CN/dop/develop/openapi/video-management/douyin/iframe-player/get-iframe-by-video 。已实播验证一瓶酱与小椰爆爆。浏览器限制自动播放时需点击画面；作品下架、平台限制或网络异常时可重新加载或打开原片。未逐条验证100部当前播放可用性。
+
 入口：`dist/mira-templates/creators.html`。本地启动：在仓库根目录运行 `python3 -m http.server 8873 --bind 127.0.0.1 --directory dist`，访问 `/mira-templates/creators.html`。
 
 ## 操作
