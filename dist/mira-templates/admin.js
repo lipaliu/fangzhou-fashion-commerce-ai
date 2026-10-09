@@ -1,4 +1,4 @@
-import { createSourcePlayer } from './source-player.js';
+import { createSourcePlayer } from './source-player.js?v=card-2';
 import {
   candidates as initialCandidates,
   statusLabels,
@@ -33,7 +33,7 @@ let filter = "all",
   timer;
 const record = (id) => records[id] || { status: "pending" };
 const role = () => $("#role").value;
-const player = createSourcePlayer({canOpen: () => canManage(role()), onSelect: openAnalysis});
+const player = createSourcePlayer({canOpen: () => canManage(role())});
 function toast(message) {
   $("#toast").textContent = message;
   $("#toast").classList.add("show");
@@ -48,6 +48,7 @@ function persist() {
   }
 }
 function render() {
+  player.close();
   candidates = mergeCandidates(creatorCatalog, readSelections(), initialCandidates);
   const allowed = canManage(role());
   $("#access-denied").hidden = allowed;
@@ -69,7 +70,7 @@ function render() {
         `<article class="candidate-card"><button type="button" class="candidate-cover" data-play="${c.id}" aria-label="播放${escape(c.title)}原视频">${c.poster ? `<img src="${c.poster}" alt="${escape(c.title)}原片截图">` : `<strong>${["↻", "✦", "▧"][i % 3]} ${escape(c.title.split(" · ")[0])}</strong>`}<small>${c.poster ? "原片截图 · 页内播放" : "文字线索 · 暂无核验封面"} ▶</small></button><div class="candidate-copy"><div class="candidate-meta"><span>抖音 · ${escape(c.creator)}</span><span>${statusLabels[record(c.id).status] || "待筛选"}</span></div><h2>${escape(c.title)}</h2><p>${escape(c.note)}</p><small>${escape(c.evidence)} · 热度待核验</small><div class="candidate-actions"><a class="source-link" href="${c.url}" target="_blank" rel="noopener noreferrer">看原视频 ↗</a><button class="text-button" data-defer="${c.id}">${record(c.id).status === "deferred" ? "恢复候选" : "暂不做"}</button><button class="primary" data-select="${c.id}">${["selected", "request"].includes(record(c.id).status) ? "修改拆解要求" : "愿意做这个 →"}</button></div></div></article>`,
     )
     .join("");
-  document.querySelectorAll("[data-play]").forEach(b => b.onclick = () => player.open(candidates.find(c => c.id === b.dataset.play)));
+  document.querySelectorAll("[data-play]").forEach(b => b.onclick = () => player.open(candidates.find(c => c.id === b.dataset.play), b));
   document
     .querySelectorAll("[data-select]")
     .forEach((b) => (b.onclick = () => openAnalysis(b.dataset.select)));
@@ -88,6 +89,7 @@ function render() {
   );
 }
 function openAnalysis(id) {
+  player.close();
   if (!canManage(role())) return;
   const c = candidates.find((c) => c.id === id);
   if (!c) return;
