@@ -40,3 +40,12 @@
 - `node --test tests/mira-template.test.mjs tests/mira-candidates.test.mjs` 8项通过；两个页面JS语法检查及git diff --check通过。
 - 管理指导与普通用户作者灵感在请求中分开；任务保持pending_backend，未伪造拆解结果或发布成功。
 - 证据截图：admin-candidates.jpg、admin-instructions.jpg及更新后的result-desktop.jpg。未调用付费模型、未修改生产。
+
+## 2026-10-09 一百个抖音账号参考库
+
+- 新增 `creators.html`，100 个按作者显示名去重的账号，66 个转场参考、34 个展示参考，每个附代表作及本地保存的真实封面。
+- 数据来自登录后的抖音公开搜索，公开来源原始记录在 `research/douyin-sources-20261009.json`，完整名单在 `research/100-douyin-creators.md`。玩法标签依据标题初筛，完整视频待拆解，未逐主页核对作者 ID、更新频率或制作方法；不能据此声称 100 个都是 AI 批量生产账号或当前爆款。
+- 浏览器验证搜索、AI 相关线索筛选（2条）、第6页（最后10条）、角色预览、选为候选、指导文字传递、恢复筛选状态。临时验收记录恢复待筛选并清空文字，原有4条候选保留。
+- 100 张封面和5项页面/脚本/数据资源本地 HTTP 请求全部200。浏览器检查首屏及卡片布局，截图 `screenshots/creator-library.jpg`。
+- `node --test tests/*.test.mjs`：12 项通过。新增覆盖唯一名单、真实来源链接及封面文件、可信目录合并、重复代表作去重和最新指导文字优先、损坏存储容错。
+- 筛选结果保存在同源 localStorage。角色切换仅交互原型，不能作为正式服务端鉴权。自动采集、真实 AI 拆解和生成、模板发布仍待服务端接入。本次不改变生产环境。

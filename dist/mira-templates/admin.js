@@ -1,9 +1,16 @@
 import {
-  candidates,
+  candidates as initialCandidates,
   statusLabels,
   canManage,
   makeAnalysisRequest,
 } from "./candidates.js";
+import { readSelections, mergeCandidates, candidateInstruction, CREATOR_SELECTION_KEY } from './creator-store.js';
+let creatorCatalog = [];
+try {
+  const response = await fetch('./creators.json');
+  if (response.ok) creatorCatalog = await response.json();
+} catch {}
+let candidates = mergeCandidates(creatorCatalog, readSelections(), initialCandidates);
 const $ = (s) => document.querySelector(s);
 const escape = (s) =>
   String(s).replace(
@@ -39,6 +46,7 @@ function persist() {
   }
 }
 function render() {
+  candidates = mergeCandidates(creatorCatalog, readSelections(), initialCandidates);
   const allowed = canManage(role());
   $("#access-denied").hidden = allowed;
   $("#admin-workspace").hidden = !allowed;
@@ -85,7 +93,7 @@ function openAnalysis(id) {
   $("#analysis-title").textContent = c.title;
   $("#analysis-source").href = c.url;
   $("#analysis-instruction").value =
-    record(id).instruction ?? c.instruction ?? "";
+    candidateInstruction(c, record(id));
   $("#analysis-result").hidden = true;
   $("#analysis-dialog").showModal();
 }
@@ -160,3 +168,6 @@ document.querySelectorAll("[data-status]").forEach(
     }),
 );
 render();
+window.addEventListener('storage', (event) => {
+  if (event.key === CREATOR_SELECTION_KEY) render();
+});
